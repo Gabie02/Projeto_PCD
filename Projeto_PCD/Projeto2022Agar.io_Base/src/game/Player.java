@@ -83,7 +83,7 @@ public abstract class Player extends Thread {
 	
 	public abstract void move();
 	
-	public boolean isValidPosition(Coordinate coords) {
+	public boolean isInsideBoard(Coordinate coords) {
 		if(coords.x >= Game.DIMX || coords.x < 0 || coords.y >= Game.DIMY || coords.y < 0)
 			return false;
 		return true;

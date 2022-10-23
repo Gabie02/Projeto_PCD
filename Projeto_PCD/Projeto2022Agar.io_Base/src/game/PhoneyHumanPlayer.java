@@ -47,7 +47,7 @@ public class PhoneyHumanPlayer extends Player {
 			coordsOld = getCurrentCell().getPosition();
 			coordsNew = (coordsOld.translate(Direction.LEFT.getVector()));
 			cellOld = getCurrentCell();
-			if(isValidPosition(coordsNew)) {
+			if(isInsideBoard(coordsNew)) {
 			cellNew = game.getCell(coordsNew);
 			cellOld.setPlayer(null);  
 			cellNew.setPlayer(this);
@@ -59,7 +59,7 @@ public class PhoneyHumanPlayer extends Player {
 			coordsOld = getCurrentCell().getPosition();
 			coordsNew = (coordsOld.translate(Direction.DOWN.getVector()));
 			cellOld = getCurrentCell();
-			if(isValidPosition(coordsNew)) {
+			if(isInsideBoard(coordsNew)) {
 			cellNew = game.getCell(coordsNew);
 			cellOld.setPlayer(null);  
 			cellNew.setPlayer(this);
@@ -71,7 +71,7 @@ public class PhoneyHumanPlayer extends Player {
 			coordsOld = getCurrentCell().getPosition();
 			coordsNew = (coordsOld.translate(Direction.RIGHT.getVector()));
 			cellOld = getCurrentCell();
-			if(isValidPosition(coordsNew)) {
+			if(isInsideBoard(coordsNew)) {
 			cellNew = game.getCell(coordsNew);
 			cellOld.setPlayer(null);  
 			cellNew.setPlayer(this);
@@ -83,7 +83,7 @@ public class PhoneyHumanPlayer extends Player {
 			coordsOld = getCurrentCell().getPosition();
 			coordsNew = (coordsOld.translate(Direction.UP.getVector()));
 			cellOld = getCurrentCell();
-			if(isValidPosition(coordsNew)) {
+			if(isInsideBoard(coordsNew)) {
 			cellNew = game.getCell(coordsNew);
 			cellOld.setPlayer(null);  
 			cellNew.setPlayer(this);
