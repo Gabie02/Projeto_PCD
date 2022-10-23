@@ -3,13 +3,14 @@ package game;
 
 
 import environment.Cell;
+import environment.Coordinate;
 
 /**
  * Represents a player.
  * @author luismota
  *
  */
-public abstract class Player  {
+public abstract class Player extends Thread {
 
 
 	protected  Game game;
@@ -18,11 +19,20 @@ public abstract class Player  {
 
 	private byte currentStrength;
 	protected byte originalStrength;
+	
+	
 
 	// TODO: get player position from data in game
 	public Cell getCurrentCell() {
+		for (int x = 0; x < Game.DIMX; x++) 
+			for (int y = 0; y < Game.DIMY; y++) {
+				if(game.board[x][y].isOcupied() && game.board[x][y].getPlayer().equals(this))
+					return game.board[x][y];
+			}
 		return null;
 	}
+	
+	
 
 	public Player(int id, Game game, byte strength) {
 		super();
@@ -70,4 +80,15 @@ public abstract class Player  {
 	public int getIdentification() {
 		return id;
 	}
+	
+	public abstract void move();
+	
+	public boolean isValidPosition(Coordinate coords) {
+		if(coords.x >= Game.DIMX || coords.x < 0 || coords.y >= Game.DIMY || coords.y < 0)
+			return false;
+		return true;
+	}
+	
+		
+	
 }

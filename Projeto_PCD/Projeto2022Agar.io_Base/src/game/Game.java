@@ -33,9 +33,11 @@ public class Game extends Observable {
 	public void addPlayerToGame(Player player) {
 		Cell initialPos=getRandomCell();
 		initialPos.setPlayer(player);
+		//player.setCurrentCell(initialPos);
 		
 		// To update GUI
 		notifyChange();
+		player.start();
 		
 	}
 
