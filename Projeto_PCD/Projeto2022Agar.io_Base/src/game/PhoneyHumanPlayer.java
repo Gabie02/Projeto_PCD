@@ -17,18 +17,19 @@ public class PhoneyHumanPlayer extends Player {
 	public boolean isHumanPlayer() {
 		return false;
 	}
-	
+
 	@Override
 	public void run() {
 		try {
 			sleep(10000);
 		} catch (InterruptedException e1) {}
-		
+
 		while(true) {
 			move();
 			game.notifyChange();
 			try {
-				sleep(Game.REFRESH_INTERVAL);
+				// Fazer com players com maior energia se movam a cada (intervalo*pontos_de_energia) ciclos.
+				sleep(Game.REFRESH_INTERVAL * Byte.toUnsignedInt(originalStrength));
 			} catch (InterruptedException e) {}
 		}
 	}
@@ -36,64 +37,33 @@ public class PhoneyHumanPlayer extends Player {
 	@Override
 	public void move() {
 		int random = ((int) (Math.random()*4));
-		System.out.println(random);
-		Coordinate coordsOld;
-		Coordinate coordsNew;
-		Cell cellOld;
-		Cell cellNew;
+		Coordinate coordsOld = getCurrentCell().getPosition();
+		Direction dir = Direction.UP;
 		switch(random) {
-		
 		case 0: //LEFT
-			coordsOld = getCurrentCell().getPosition();
-			coordsNew = (coordsOld.translate(Direction.LEFT.getVector()));
-			cellOld = getCurrentCell();
-			if(isInsideBoard(coordsNew)) {
-			cellNew = game.getCell(coordsNew);
-			cellOld.setPlayer(null);  
-			cellNew.setPlayer(this);
-			}
-			
+			dir = Direction.LEFT;
 			break;
-		
+
 		case 1: //DOWN
-			coordsOld = getCurrentCell().getPosition();
-			coordsNew = (coordsOld.translate(Direction.DOWN.getVector()));
-			cellOld = getCurrentCell();
-			if(isInsideBoard(coordsNew)) {
-			cellNew = game.getCell(coordsNew);
-			cellOld.setPlayer(null);  
-			cellNew.setPlayer(this);
-			}
-			
+			dir = Direction.DOWN;
 			break;
-				
+
 		case 2: //RIGHT
-			coordsOld = getCurrentCell().getPosition();
-			coordsNew = (coordsOld.translate(Direction.RIGHT.getVector()));
-			cellOld = getCurrentCell();
-			if(isInsideBoard(coordsNew)) {
-			cellNew = game.getCell(coordsNew);
-			cellOld.setPlayer(null);  
-			cellNew.setPlayer(this);
-			}
-			
+			dir = Direction.RIGHT;
 			break;
-			
+
 		case 3: //UP
-			coordsOld = getCurrentCell().getPosition();
-			coordsNew = (coordsOld.translate(Direction.UP.getVector()));
-			cellOld = getCurrentCell();
-			if(isInsideBoard(coordsNew)) {
-			cellNew = game.getCell(coordsNew);
-			cellOld.setPlayer(null);  
-			cellNew.setPlayer(this);
-			}
-			
+			dir = Direction.UP;
 			break;
-		
-			
 		}
-		
-	}
-	
+		Coordinate coordsNew = coordsOld.translate(dir.getVector());
+		Cell cellOld = getCurrentCell();
+		if(isInsideBoard(coordsNew)) {
+			Cell cellNew = game.getCell(coordsNew);
+			cellNew.setPlayer(this);
+			cellOld.setPlayer(null);  
+		}
+//		System.out.println(this.getCurrentStrength() + " moveu-se");
+		}
+
 }
