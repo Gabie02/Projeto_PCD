@@ -20,6 +20,13 @@ public class PhoneyHumanPlayer extends Player {
 
 	@Override
 	public void run() {
+		//teste
+		Coordinate coords = new Coordinate(10,10);
+		Cell posTesteConflito = game.getCell(coords);
+		posTesteConflito.setPlayer(this);
+		
+		game.notifyChange();
+		///
 		try {
 			sleep(10000);
 		} catch (InterruptedException e1) {}
@@ -60,6 +67,8 @@ public class PhoneyHumanPlayer extends Player {
 		Cell cellOld = getCurrentCell();
 		if(isInsideBoard(coordsNew)) {
 			Cell cellNew = game.getCell(coordsNew);
+			//Se houve conflicto 
+			//if(cellNew)
 			cellNew.setPlayer(this);
 			cellOld.setPlayer(null);  
 		}

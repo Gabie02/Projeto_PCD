@@ -22,7 +22,7 @@ public abstract class Player extends Thread {
 	
 	
 
-	// TODO: get player position from data in game
+	
 	public Cell getCurrentCell() {
 		for (int x = 0; x < Game.DIMX; x++) 
 			for (int y = 0; y < Game.DIMY; y++) {
