@@ -36,22 +36,48 @@ public class Cell {
 	public Player getPlayer() {
 		return player;
 	}
+	
+	private void freeCell() {
+		this.player = null;
+		notifyAll();
+	}
+	
+	//Usar mecanismo de bloqueio diferente ao do InitialPosition
+	public synchronized void setPlayer(Player player) throws InterruptedException {
+		if(player == null) {
+			freeCell();
+			return;
+		}
 
+		if(isOcupied()) {
+			System.out.println("--- [Bloqueio por obstáculo] ---\n "
+					+ "Posição: " + getPosition() 
+					+ "\n Jogador a ocupar: " + getPlayer() 
+					+ "\n Jogador a tentar ocupar: " + player);
+			wait();
+		}
+		this.player = player;
+	}
 	
 	
 	// Should not be used like this in the initial state: cell might be occupied, must coordinate this operation
-	public void setPlayer(Player player) {
+	public void setPlayerToInitialPosition(Player player) {
 		lock.lock();
 		try {
+			//A cell está a ser desocupada
 			if(player == null) {
 				this.player = null;
 				notOcupied.signalAll();
 				return;
 			}
+			
+			//A cell está a tentar ser ocupada
 			while(isOcupied()) {
 				try {
-					System.out.println("Bloqueio na colocação");
-					System.out.println("Posição: " + getPosition() + " Jogador a ocupar: " + getPlayer() + " Jogador a tentar ocupar: " + player);
+					System.out.println("--- [Bloqueio na colocação inicial] ---\n "
+							+ "Posição: " + getPosition() 
+							+ "\n Jogador a ocupar: " + getPlayer() 
+							+ "\n Jogador a tentar ocupar: " + player);
 					notOcupied.await();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -63,6 +89,11 @@ public class Cell {
 			lock.unlock();
 		}
 		
+	}
+
+	@Override
+	public String toString() {
+		return "Cell(" + position.x + ", " + position.y + ")";
 	}
 	
 	

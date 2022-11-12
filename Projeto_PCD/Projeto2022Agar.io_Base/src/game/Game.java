@@ -10,13 +10,15 @@ public class Game extends Observable {
 	public static final int DIMY = 30;
 	public static final int DIMX = 30;
 	// trocamos para public
-	public static final int NUM_PLAYERS = 90;
-	public static final int NUM_FINISHED_PLAYERS_TO_END_GAME=3;
+	private static final int NUM_PLAYERS = 90;
+	private static final int NUM_FINISHED_PLAYERS_TO_END_GAME=3;
 
 	public static final long REFRESH_INTERVAL = 400;
 	public static final double MAX_INITIAL_STRENGTH = 3;
 	public static final long MAX_WAITING_TIME_FOR_MOVE = 2000;
 	public static final long INITIAL_WAITING_TIME = 10000;
+	
+	public static final int NUM_POINTS_TO_WIN = 10;
 
 	protected Cell[][] board;
 
@@ -32,14 +34,13 @@ public class Game extends Observable {
 	 * @param player 
 	 */
 	public void addPlayerToGame(Player player) {
-		//Cell initialPos=getRandomCell();
-		//initialPos.setPlayer(player);
-		Coordinate coords = new Coordinate(10,10);
-		Cell posTesteConflito = getCell(coords);
-		posTesteConflito.setPlayer(player);
+		Cell initialPos=getRandomCell();
+		initialPos.setPlayerToInitialPosition(player);
 		
-		
-		
+		//Teste de bloqueio
+//		Coordinate coords = new Coordinate(10,10);
+//		Cell posTesteConflito = getCell(coords);
+//		posTesteConflito.setPlayer(player);
 		
 		// To update GUI
 		notifyChange();
@@ -47,14 +48,36 @@ public class Game extends Observable {
 		
 	}
 
+	public void init() {
+		//Depois trocar por NUM_PLAYERS
+		for (int i = 1; i <= 30; i++) {
+			int randomEnergy = 1 + (int)(Math.random() * MAX_INITIAL_STRENGTH);
+			AutomaticPlayer p1 = new AutomaticPlayer(i, this, (byte)randomEnergy);
+			addPlayerToGame(p1);
+		}
+	}
+	
+//	private boolean gameIsOver() {
+//		int count = 0;
+//		for (int x = 0; x < Game.DIMX; x++) 
+//			for (int y = 0; y < Game.DIMY; y++) 
+//				//Adicionar mais tarde nesta condição que o player tem que ser humano
+//				if(board[x][y].isOcupied() && board[x][y].getPlayer().getCurrentStrength() == NUM_POINTS_TO_WIN)
+//					count++;
+//		return count>=NUM_FINISHED_PLAYERS_TO_END_GAME;
+//	}
+	
 	public Cell getCell(Coordinate at) {
 		return board[at.x][at.y];
 	}
-
+	
 	/**	
 	 * Updates GUI. Should be called anytime the game state changes
 	 */
 	public void notifyChange() {
+//		if(gameIsOver()) {
+//			//acabar o jogo
+//		}
 		setChanged();
 		notifyObservers();
 	}

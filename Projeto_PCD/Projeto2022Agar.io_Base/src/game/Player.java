@@ -12,22 +12,23 @@ import environment.Coordinate;
  */
 public abstract class Player extends Thread {
 
-
 	protected  Game game;
 
 	private int id;
-
+	
+	private boolean isObstacle;
+	
 	private byte currentStrength;
 	protected byte originalStrength;
 	
 	
-
-	
 	public Cell getCurrentCell() {
 		for (int x = 0; x < Game.DIMX; x++) 
 			for (int y = 0; y < Game.DIMY; y++) {
+//					if(game.board[x][y].isOcupied())
+//						if(game.board[x][y].getPlayer().equals(this))
 				if(game.board[x][y].isOcupied() && game.board[x][y].getPlayer().equals(this))
-					return game.board[x][y];
+							return game.board[x][y];
 			}
 		return null;
 	}
@@ -40,13 +41,55 @@ public abstract class Player extends Thread {
 		this.game=game;
 		currentStrength=strength;
 		originalStrength=strength;
+		isObstacle = true;
 	}
-
+	//-------- Adições novas -------------
+	
+	@Override
+	public void run() {
+		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
+		try {
+//			sleep(6000);
+			sleep(game.INITIAL_WAITING_TIME);
+		} catch (InterruptedException e1) {}
+		isObstacle = false;
+	}
+	
+	/* No código do Board, considera-se que um player é um obstáculo se a currentStrength == 0. 
+	 * 	Por motivos práticos, considera-se um player como um "obstáculo" quando ele está no sleep
+	 * inicial, apesar do jogo não o considerar como um obstáculo em si pq a currentStrenght != 0 
+	 */
+	public boolean isObstable() {
+		return isObstacle || currentStrength == 0;
+	}
+	
+	private void setAsObstacle() {
+		currentStrength = 0;
+		isObstacle = true;
+	}
+	
+	public static void settleDisputeBetween(Player p1, Player p2) {
+		System.out.println("--- [Disputa] --- \n	Entre: \n	" + p1 + "\n	" + p2);
+		Player winner = (p1.currentStrength > p2.currentStrength) ? p1 : p2;
+		Player loser = (p1.currentStrength > p2.currentStrength) ? p2 : p1;
+		
+		winner.currentStrength += loser.currentStrength; 
+		
+		//Limitar o num de pontos do vencedor a 10
+		winner.currentStrength = (winner.currentStrength > 10) ? 
+				winner.currentStrength=10 : winner.currentStrength;
+		
+		loser.setAsObstacle();
+		System.out.println("	Vencedor da disputa id=" + winner.id);
+	}
+	
+	//-----------------------------------
+	
 	public abstract boolean isHumanPlayer();
 	
 	@Override
 	public String toString() {
-		return "Player [id=" + id + ", currentStrength=" + currentStrength + ", getCurrentCell()=" + getCurrentCell()
+		return "Player [id=" + id + ", currentStrength=" + currentStrength + ", " + getCurrentCell()
 		+ "]";
 	}
 

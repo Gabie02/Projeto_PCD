@@ -3,9 +3,12 @@ package gui;
 import java.util.Observable;
 import java.util.Observer;
 import game.Game;
-import game.PhoneyHumanPlayer;
+import game.AutomaticPlayer;
 
 import javax.swing.JFrame;
+
+import environment.Cell;
+import environment.Coordinate;
 
 public class GameGuiMain implements Observer {
 	private JFrame frame = new JFrame("pcd.io");
@@ -41,13 +44,28 @@ public class GameGuiMain implements Observer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//game.addPlayerToGame(new PhoneyHumanPlayer(1, game, (byte)3));
-		//game.addPlayerToGame(new PhoneyHumanPlayer(2, game, (byte)2));
-		//game.addPlayerToGame(new PhoneyHumanPlayer(3, game, (byte)1));
-		PhoneyHumanPlayer p1 = new PhoneyHumanPlayer(1, game, (byte)3);
-		PhoneyHumanPlayer p2 = new PhoneyHumanPlayer(2, game, (byte)2);
-		p1.start();
-		p2.start();
+		
+		//Adiciona todos os players ao jogo
+		game.init();
+		
+		//Teste 
+		AutomaticPlayer p1 = new AutomaticPlayer(100, game, (byte)9);
+		AutomaticPlayer p2 = new AutomaticPlayer(101, game, (byte)9);
+		game.addPlayerToGame(p1);
+		game.addPlayerToGame(p2);
+//		p1.start();
+//		p2.start();
+		
+		//Obstáculos para teste
+//		Coordinate coordsObs1 = new Coordinate(9,10);
+//		Coordinate coordsObs2 = new Coordinate(10,12);
+//		Cell posConflitoObs1 = game.getCell(coordsObs1);
+//		Cell posConflitoObs2 = game.getCell(coordsObs2);
+//		
+//		AutomaticPlayer obs1 = new AutomaticPlayer(3, game, (byte)0);
+//		AutomaticPlayer obs2 = new AutomaticPlayer(4, game, (byte)0);
+//		posConflitoObs1.setPlayer(obs1);
+//		posConflitoObs2.setPlayer(obs2);
 	}
 
 	@Override
