@@ -46,15 +46,15 @@ public class GameGuiMain implements Observer {
 		}
 		
 		//Adiciona todos os players ao jogo
-		game.init();
+//		game.init();
 		
 		//Teste 
-		AutomaticPlayer p1 = new AutomaticPlayer(100, game, (byte)9);
-		AutomaticPlayer p2 = new AutomaticPlayer(101, game, (byte)9);
-		game.addPlayerToGame(p1);
-		game.addPlayerToGame(p2);
-//		p1.start();
-//		p2.start();
+		AutomaticPlayer p1 = new AutomaticPlayer(3, game, (byte)3);
+		AutomaticPlayer p2 = new AutomaticPlayer(2, game, (byte)2);
+//		game.addPlayerToGame(p1);
+//		game.addPlayerToGame(p2);
+		p1.start();
+		p2.start();
 		
 		//Obstáculos para teste
 //		Coordinate coordsObs1 = new Coordinate(9,10);

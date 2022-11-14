@@ -20,8 +20,14 @@ public class AutomaticPlayer extends Player {
 
 	@Override
 	public void run() {
+		Coordinate coords = new Coordinate(10,10);
+		Cell posTesteConflito = game.getCell(coords);
+		posTesteConflito.setPlayerToInitialPosition(this);
+		
+		game.notifyChange();
 		//	O sleep é feito agora na classe "pai", Player
 		super.run();
+		
 		while(true) {
 
 			move();
@@ -61,17 +67,19 @@ public class AutomaticPlayer extends Player {
 
 		Player newCellPlayer = cellNew.getPlayer();
 		//Apenas desocupar a posição se n houver conflicto
-		if(newCellPlayer == null) {
-			try {
-				cellNew.setPlayer(this);
-				cellOld.setPlayer(null);
-			} catch (InterruptedException e) {}
-
-		} else if(newCellPlayer.isObstable()) {
-			//O jogador vai bloquear
-				try {
-					cellNew.setPlayer(this);
-				} catch (InterruptedException e) {}
+		if(newCellPlayer == null || !newCellPlayer.isObstable()){
+			cellNew.setPlayerToInitialPosition(this);
+			cellOld.setPlayerToInitialPosition(null);  
+//			try {
+//				cellNew.setPlayer(this);
+//				cellOld.setPlayer(null);
+//			} catch (InterruptedException e) {}
+//
+//		} else if(newCellPlayer.isObstable()) {
+//			//O jogador vai bloquear
+//				try {
+//					cellNew.setPlayer(this);
+//				} catch (InterruptedException e) {}
 		} else {
 			settleDisputeBetween(this, newCellPlayer);
 		}

@@ -47,7 +47,7 @@ public abstract class Player extends Thread {
 	
 	@Override
 	public void run() {
-		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
+//		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
 		try {
 //			sleep(6000);
 			sleep(game.INITIAL_WAITING_TIME);

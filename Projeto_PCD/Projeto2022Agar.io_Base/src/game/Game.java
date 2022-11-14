@@ -39,8 +39,8 @@ public class Game extends Observable {
 		
 		//Teste de bloqueio
 //		Coordinate coords = new Coordinate(10,10);
-//		Cell posTesteConflito = getCell(coords);
-//		posTesteConflito.setPlayer(player);
+//		Cell posTesteConflito = getCell(coords);	
+//		posTesteConflito.setPlayerToInitialPosition(player);
 		
 		// To update GUI
 		notifyChange();

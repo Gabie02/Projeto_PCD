@@ -37,15 +37,12 @@ public class Cell {
 		return player;
 	}
 	
-	private void freeCell() {
-		this.player = null;
-		notifyAll();
-	}
 	
 	//Usar mecanismo de bloqueio diferente ao do InitialPosition
 	public synchronized void setPlayer(Player player) throws InterruptedException {
 		if(player == null) {
-			freeCell();
+			disoccupyCell();
+			notifyAll();
 			return;
 		}
 
@@ -59,6 +56,10 @@ public class Cell {
 		this.player = player;
 	}
 	
+	private void disoccupyCell() {
+		this.player = null;
+		notOcupied.signalAll();
+	}
 	
 	// Should not be used like this in the initial state: cell might be occupied, must coordinate this operation
 	public void setPlayerToInitialPosition(Player player) {
@@ -66,8 +67,7 @@ public class Cell {
 		try {
 			//A cell está a ser desocupada
 			if(player == null) {
-				this.player = null;
-				notOcupied.signalAll();
+				disoccupyCell();
 				return;
 			}
 			
