@@ -16,8 +16,6 @@ public abstract class Player extends Thread {
 
 	private int id;
 	
-	private boolean isObstacle;
-	
 	private byte currentStrength;
 	protected byte originalStrength;
 	
@@ -25,15 +23,11 @@ public abstract class Player extends Thread {
 	public Cell getCurrentCell() {
 		for (int x = 0; x < Game.DIMX; x++) 
 			for (int y = 0; y < Game.DIMY; y++) {
-//					if(game.board[x][y].isOcupied())
-//						if(game.board[x][y].getPlayer().equals(this))
 				if(game.board[x][y].isOcupied() && game.board[x][y].getPlayer().equals(this))
 							return game.board[x][y];
 			}
 		return null;
 	}
-	
-	
 
 	public Player(int id, Game game, byte strength) {
 		super();
@@ -41,31 +35,29 @@ public abstract class Player extends Thread {
 		this.game=game;
 		currentStrength=strength;
 		originalStrength=strength;
-		isObstacle = true;
 	}
 	//-------- Adições novas -------------
 	
 	@Override
 	public void run() {
+		game.addPlayerToGame(this);
 //		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
 		try {
 //			sleep(6000);
 			sleep(game.INITIAL_WAITING_TIME);
 		} catch (InterruptedException e1) {}
-		isObstacle = false;
 	}
 	
-	/* No código do Board, considera-se que um player é um obstáculo se a currentStrength == 0. 
-	 * 	Por motivos práticos, considera-se um player como um "obstáculo" quando ele está no sleep
-	 * inicial, apesar do jogo não o considerar como um obstáculo em si pq a currentStrenght != 0 
-	 */
+	public boolean hasWon() {
+		return currentStrength == game.NUM_POINTS_TO_WIN;
+	}
+	
 	public boolean isObstable() {
-		return isObstacle || currentStrength == 0;
+		return currentStrength == 0;
 	}
 	
 	private void setAsObstacle() {
 		currentStrength = 0;
-		isObstacle = true;
 	}
 	
 	public static void settleDisputeBetween(Player p1, Player p2) {

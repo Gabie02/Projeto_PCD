@@ -20,17 +20,14 @@ public class AutomaticPlayer extends Player {
 
 	@Override
 	public void run() {
-		Coordinate coords = new Coordinate(10,10);
-		Cell posTesteConflito = game.getCell(coords);
-		posTesteConflito.setPlayerToInitialPosition(this);
-		
-		game.notifyChange();
 		//	O sleep é feito agora na classe "pai", Player
 		super.run();
-		
 		while(true) {
 
-			move();
+			//	Apenas players que não estão bloqueados na posição inicial é que fazem move()
+			if(getCurrentCell()!=null)
+				move();
+
 			game.notifyChange();
 
 			//Se já estiver morto, acabar o run
@@ -38,7 +35,7 @@ public class AutomaticPlayer extends Player {
 				break;
 
 			//Se o jogador é um dos vencedores, acabar o run e registar no jogo
-			if(getCurrentStrength() == game.NUM_POINTS_TO_WIN) {
+			if(hasWon()) {
 				//registar no jogo?
 				break;
 			}
@@ -53,38 +50,41 @@ public class AutomaticPlayer extends Player {
 
 	@Override
 	public void move() {		
+		Cell currCell = getCurrentCell();
 		Direction dir = generateRandomDirection();
-		
-		Cell cellOld = getCurrentCell();
-		
-		Coordinate coordsOld = cellOld.getPosition();
-		Coordinate coordsNew = coordsOld.translate(dir.getVector());
-		
-		if(!isInsideBoard(coordsNew)) 
-			return;
-		
-		Cell cellNew = game.getCell(coordsNew);
 
-		Player newCellPlayer = cellNew.getPlayer();
-		//Apenas desocupar a posição se n houver conflicto
-		if(newCellPlayer == null || !newCellPlayer.isObstable()){
-			cellNew.setPlayerToInitialPosition(this);
-			cellOld.setPlayerToInitialPosition(null);  
-//			try {
-//				cellNew.setPlayer(this);
-//				cellOld.setPlayer(null);
-//			} catch (InterruptedException e) {}
-//
-//		} else if(newCellPlayer.isObstable()) {
-//			//O jogador vai bloquear
-//				try {
-//					cellNew.setPlayer(this);
-//				} catch (InterruptedException e) {}
-		} else {
-			settleDisputeBetween(this, newCellPlayer);
+		Coordinate oldCoords = currCell.getPosition();
+		Coordinate newCoords = oldCoords.translate(dir.getVector());
+
+		if(!isInsideBoard(newCoords)) 
+			return;
+
+		Cell newCell = game.getCell(newCoords);
+
+		Player newCellPlayer = newCell.getPlayer();
+
+		//	Se o movimento for para um posição que estiver vazia.
+		if(newCellPlayer == null){
+			try {
+				newCell.setPlayer(this);
+				currCell.setPlayer(null);
+			} catch (InterruptedException e) {}
+			return;
 		}
+
+		//	Se o movimento for para um posição que estiver ocupada com um jogador morto (obstáculo).
+		if(newCellPlayer.isObstable()) {
+			//O jogador vai bloquear
+			try {
+				newCell.setPlayer(this);
+			} catch (InterruptedException e) {}
+			return;
+		} 
+		
+		// Se o movimento for para uma posição com um jogador
+		settleDisputeBetween(this, newCellPlayer);
 	}
-	
+
 	private Direction generateRandomDirection() {
 		int random = ((int) (Math.random()*4));
 		Direction dir = Direction.UP;
@@ -107,6 +107,6 @@ public class AutomaticPlayer extends Player {
 		}
 		return dir;
 	}
-	
+
 
 }

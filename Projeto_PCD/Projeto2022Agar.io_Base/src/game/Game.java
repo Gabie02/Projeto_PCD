@@ -37,23 +37,15 @@ public class Game extends Observable {
 		Cell initialPos=getRandomCell();
 		initialPos.setPlayerToInitialPosition(player);
 		
-		//Teste de bloqueio
-//		Coordinate coords = new Coordinate(10,10);
-//		Cell posTesteConflito = getCell(coords);	
-//		posTesteConflito.setPlayerToInitialPosition(player);
-		
 		// To update GUI
 		notifyChange();
-		player.start();
-		
 	}
 
 	public void init() {
 		//Depois trocar por NUM_PLAYERS
-		for (int i = 1; i <= 30; i++) {
+		for (int i = 1; i <= NUM_PLAYERS; i++) {
 			int randomEnergy = 1 + (int)(Math.random() * MAX_INITIAL_STRENGTH);
-			AutomaticPlayer p1 = new AutomaticPlayer(i, this, (byte)randomEnergy);
-			addPlayerToGame(p1);
+			new AutomaticPlayer(i, this, (byte)randomEnergy).start();
 		}
 	}
 	

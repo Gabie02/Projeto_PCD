@@ -12,11 +12,8 @@ public class Cell {
 	private Game game;
 	private Player player=null;
 	
-	//TESTE
 	private Lock lock = new ReentrantLock();
-	private Condition ocupied = lock.newCondition();
 	private Condition notOcupied = lock.newCondition();
-	/////////
 	
 	public Cell(Coordinate position,Game g) {
 		super();
@@ -58,7 +55,12 @@ public class Cell {
 	
 	private void disoccupyCell() {
 		this.player = null;
-		notOcupied.signalAll();
+		lock.lock();
+		try {
+			notOcupied.signalAll();
+		} finally {
+			lock.unlock();
+		}
 	}
 	
 	// Should not be used like this in the initial state: cell might be occupied, must coordinate this operation
@@ -84,7 +86,6 @@ public class Cell {
 				}
 			}
 			this.player = player;
-			ocupied.signalAll();
 		} finally {
 			lock.unlock();
 		}
