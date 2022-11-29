@@ -1,5 +1,6 @@
 package environment;
 
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -36,10 +37,9 @@ public class Cell {
 	
 	
 	//Usar mecanismo de bloqueio diferente ao do InitialPosition
-	public synchronized void setPlayer(Player player) throws InterruptedException {
+	public synchronized void setPlayer(Player player) {
 		if(player == null) {
 			disoccupyCell();
-			notifyAll();
 			return;
 		}
 
@@ -48,7 +48,13 @@ public class Cell {
 					+ "Posição: " + getPosition() 
 					+ "\n Jogador a ocupar: " + getPlayer() 
 					+ "\n Jogador a tentar ocupar: " + player);
-			wait();
+			createThreadInterrupt();
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				System.out.println("Fui interrompido " + player);
+				return;
+			}
 		}
 		this.player = player;
 	}
@@ -95,6 +101,25 @@ public class Cell {
 	@Override
 	public String toString() {
 		return "Cell(" + position.x + ", " + position.y + ")";
+	}
+	
+	public void createThreadInterrupt() {
+		final Thread playerToInterrupt = Thread.currentThread();
+		Thread C = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                    System.out.println("Passaram 2 seg, a interromper o player");
+                    playerToInterrupt.interrupt();
+
+                } catch (InterruptedException e) {
+                    System.out.println("C interrupted");
+                    return;
+                }
+            }
+        };//C
+        C.start();
 	}
 	
 	

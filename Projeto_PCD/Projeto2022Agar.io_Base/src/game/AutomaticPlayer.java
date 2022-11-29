@@ -65,19 +65,14 @@ public class AutomaticPlayer extends Player {
 
 		//	Se o movimento for para um posição que estiver vazia.
 		if(newCellPlayer == null){
-			try {
-				newCell.setPlayer(this);
-				currCell.setPlayer(null);
-			} catch (InterruptedException e) {}
+			newCell.setPlayer(this);
+			currCell.setPlayer(null);
 			return;
 		}
 
 		//	Se o movimento for para um posição que estiver ocupada com um jogador morto (obstáculo).
 		if(newCellPlayer.isObstable()) {
-			//O jogador vai bloquear
-			try {
-				newCell.setPlayer(this);
-			} catch (InterruptedException e) {}
+			newCell.setPlayer(this);
 			return;
 		} 
 		
