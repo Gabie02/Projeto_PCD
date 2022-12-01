@@ -1,8 +1,10 @@
 package gui;
 
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import game.Game;
+import game.GameGuiServer;
 import game.AutomaticPlayer;
 
 import javax.swing.JFrame;
@@ -13,7 +15,7 @@ import environment.Coordinate;
 public class GameGuiMain implements Observer {
 	private JFrame frame = new JFrame("pcd.io");
 	private BoardJComponent boardGui;
-	private Game game;
+	private static Game game;
 
 	public GameGuiMain() {
 		super();
@@ -21,7 +23,6 @@ public class GameGuiMain implements Observer {
 		game.addObserver(this);
 
 		buildGui();
-
 	}
 
 	private void buildGui() {
@@ -46,21 +47,8 @@ public class GameGuiMain implements Observer {
 		}
 		
 		//Adiciona todos os players ao jogo
-		game.init();
-		
-		//Teste 
-//		AutomaticPlayer p1 = new AutomaticPlayer(100, game, (byte)9);
-//		AutomaticPlayer p2 = new AutomaticPlayer(101, game, (byte)9);
-//		game.addPlayerToGame(p1);
-//		game.addPlayerToGame(p2);
-
-		//Obstáculos para teste
-//		Coordinate coordsObs1 = new Coordinate(9,10);
-//		Coordinate coordsObs2 = new Coordinate(10,12);
-//		Cell posConflitoObs1 = game.getCell(coordsObs1);
-//		Cell posConflitoObs2 = game.getCell(coordsObs2);
+		game.init();		
 	
-
 	}
 
 	@Override
@@ -69,8 +57,13 @@ public class GameGuiMain implements Observer {
 	}
 
 	public static void main(String[] args) {
-		GameGuiMain game = new GameGuiMain();
-		game.init();
+		new GameGuiMain().init();
+		try {
+			GameGuiServer server = new GameGuiServer(game);
+			server.startServing();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -30,7 +30,6 @@ public class AutomaticPlayer extends Player {
 
 			//Se o jogador é um dos vencedores, acabar o run e registar no jogo
 			if(hasWon()) {
-				//registar no jogo?
 				game.cdl.countDown();
 				break;
 			}

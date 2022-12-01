@@ -16,7 +16,7 @@ public class Cell {
 	private Lock lock = new ReentrantLock();
 	private Condition notOcupied = lock.newCondition();
 	
-	public Cell(Coordinate position,Game g) {
+	public Cell(Coordinate position, Game g) {
 		super();
 		this.position = position;
 		this.game=g;
@@ -105,7 +105,7 @@ public class Cell {
 	
 	public void createThreadInterrupt() {
 		final Thread playerToInterrupt = Thread.currentThread();
-		Thread C = new Thread() {
+		new Thread() {
             @Override
             public void run() {
                 try {
@@ -118,8 +118,7 @@ public class Cell {
                     return;
                 }
             }
-        };//C
-        C.start();
+        }.start();
 	}
 	
 	

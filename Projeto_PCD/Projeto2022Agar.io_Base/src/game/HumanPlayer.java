@@ -1,11 +1,13 @@
 package game;
 
-public class HumanPlayer extends Player{
+import environment.Direction;
+
+public class HumanPlayer extends Player {
 	
-	
+	private Direction lastSentDirection;
 	
 	public HumanPlayer(int id, Game game, byte strength) {
-		super(id, game, strength);
+		super(id, game, (byte)5);
 	}
 
 	@Override

@@ -43,7 +43,6 @@ public abstract class Player extends Thread {
 		game.addPlayerToGame(this);
 //		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
 		try {
-//			sleep(6000);
 			sleep(game.INITIAL_WAITING_TIME);
 		} catch (InterruptedException e1) {}
 	}
@@ -61,7 +60,7 @@ public abstract class Player extends Thread {
 	}
 	
 	public static void settleDisputeBetween(Player p1, Player p2) {
-		System.out.println("--- [Disputa] --- \n	Entre: \n	" + p1 + "\n	" + p2);
+//		System.out.println("--- [Disputa] --- \n	Entre: \n	" + p1 + "\n	" + p2);
 		Player winner = (p1.currentStrength > p2.currentStrength) ? p1 : p2;
 		Player loser = (p1.currentStrength > p2.currentStrength) ? p2 : p1;
 		
@@ -72,7 +71,7 @@ public abstract class Player extends Thread {
 				winner.currentStrength=10 : winner.currentStrength;
 		
 		loser.setAsObstacle();
-		System.out.println("	Vencedor da disputa id=" + winner.id);
+//		System.out.println("	Vencedor da disputa id=" + winner.id);
 	}
 	
 	//-----------------------------------
