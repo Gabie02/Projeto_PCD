@@ -9,7 +9,7 @@ public class Game extends Observable {
 
 	public static final int DIMY = 30;
 	public static final int DIMX = 30;
-	// trocamos para public
+	
 	private static final int NUM_PLAYERS = 90;
 	private static final int NUM_FINISHED_PLAYERS_TO_END_GAME=3;
 
@@ -19,6 +19,8 @@ public class Game extends Observable {
 	public static final long INITIAL_WAITING_TIME = 10000;
 	
 	public static final int NUM_POINTS_TO_WIN = 10;
+	//Adicao CountDownLatch
+	public CountDownLatch cdl = new CountDownLatch(NUM_FINISHED_PLAYERS_TO_END_GAME);
 
 	protected Cell[][] board;
 
@@ -47,9 +49,22 @@ public class Game extends Observable {
 			int randomEnergy = 1 + (int)(Math.random() * MAX_INITIAL_STRENGTH);
 			new AutomaticPlayer(i, this, (byte)randomEnergy).start();
 		}
+			//Tentativa CountDownLatch
+			gameIsOver();
+		
 	}
 	
-//	private boolean gameIsOver() {
+	private void gameIsOver() {
+		try {
+			cdl.await();
+			System.err.println("ACABOU O JOGO");
+			System.exit(0);
+			return;
+			
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			return;
+		}
 //		int count = 0;
 //		for (int x = 0; x < Game.DIMX; x++) 
 //			for (int y = 0; y < Game.DIMY; y++) 
@@ -57,7 +72,7 @@ public class Game extends Observable {
 //				if(board[x][y].isOcupied() && board[x][y].getPlayer().getCurrentStrength() == NUM_POINTS_TO_WIN)
 //					count++;
 //		return count>=NUM_FINISHED_PLAYERS_TO_END_GAME;
-//	}
+	}
 	
 	public Cell getCell(Coordinate at) {
 		return board[at.x][at.y];

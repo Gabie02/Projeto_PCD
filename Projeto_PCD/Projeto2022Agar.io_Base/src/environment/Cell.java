@@ -1,6 +1,6 @@
 package environment;
 
-import java.util.concurrent.atomic.AtomicReference;
+
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -43,7 +43,7 @@ public class Cell {
 			return;
 		}
 
-		if(isOcupied()) {
+		while(isOcupied()) {
 			System.out.println("--- [Bloqueio por obstáculo] ---\n "
 					+ "Posição: " + getPosition() 
 					+ "\n Jogador a ocupar: " + getPlayer() 

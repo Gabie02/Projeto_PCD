@@ -23,13 +23,7 @@ public class AutomaticPlayer extends Player {
 		//	O sleep é feito agora na classe "pai", Player
 		super.run();
 		while(true) {
-
-			//	Apenas players que não estão bloqueados na posição inicial é que fazem move()
-			if(getCurrentCell()!=null)
-				move();
-
-			game.notifyChange();
-
+			
 			//Se já estiver morto, acabar o run
 			if(isObstable())
 				break;
@@ -37,8 +31,17 @@ public class AutomaticPlayer extends Player {
 			//Se o jogador é um dos vencedores, acabar o run e registar no jogo
 			if(hasWon()) {
 				//registar no jogo?
+				game.cdl.countDown();
 				break;
 			}
+
+			//	Apenas players que não estão bloqueados na posição inicial é que fazem move()
+			if(getCurrentCell()!=null)
+				move();
+
+			game.notifyChange();
+
+
 
 			try {
 				// Fazer com players com maior energia se movam a cada (intervalo*pontos_de_energia) ciclos.
@@ -71,7 +74,7 @@ public class AutomaticPlayer extends Player {
 		}
 
 		//	Se o movimento for para um posição que estiver ocupada com um jogador morto (obstáculo).
-		if(newCellPlayer.isObstable()) {
+		if(newCellPlayer.isObstable() || newCellPlayer.hasWon()) {
 			newCell.setPlayer(this);
 			return;
 		} 

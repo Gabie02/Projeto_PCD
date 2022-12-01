@@ -56,7 +56,7 @@ public abstract class Player extends Thread {
 		return currentStrength == 0;
 	}
 	
-	private void setAsObstacle() {
+	public void setAsObstacle() {
 		currentStrength = 0;
 	}
 	
