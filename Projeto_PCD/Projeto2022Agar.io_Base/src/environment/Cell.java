@@ -55,11 +55,13 @@ public class Cell {
 		
 		//Player fica bloqueado se a cell já estiver ocupada
 		while(isOcupied()) {
-			if(getPlayer().getCurrentStrength() != 0 && getPlayer().getCurrentStrength() != 10)
-				System.err.println("PLAYER NÃO É UM OBSTÁCULO, condições: " 
-			+ "\n newCellPlayer == null? " + getPlayer()==null
-			+ "\n newCellPlayer.isObstable() || newCellPlayer.hasWon() " + (getPlayer().isObstable() || getPlayer().hasWon())
-			+ "\n ");
+			if(getPlayer().getCurrentStrength() != 0 && getPlayer().getCurrentStrength() != 10) {
+				System.err.println("PLAYER NÃO É UM OBSTÁCULO, condições: ");
+				System.err.println("newCellPlayer == null? ");
+				System.err.println(getPlayer() == null);
+				System.err.println("newCellPlayer.isObstable() || newCellPlayer.hasWon()");
+				System.err.println((getPlayer().isObstable() || getPlayer().hasWon()));
+			}
 			
 			System.out.println("--- [Bloqueio por obstáculo] --- "
 					+ "\n Jogador a ocupar: " + getPlayer() 

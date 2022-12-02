@@ -48,7 +48,7 @@ public class Game extends Observable {
 
 	public void init() {
 		//Depois trocar por NUM_PLAYERS - NUM_HUMAN_PLAYERS
-		for (int i = 1; i <= 50; i++) {
+		for (int i = 1; i <= 80; i++) {
 			int randomEnergy = 1 + (int)(Math.random() * MAX_INITIAL_STRENGTH);
 			new AutomaticPlayer(i, this, (byte)randomEnergy).start();
 		}
