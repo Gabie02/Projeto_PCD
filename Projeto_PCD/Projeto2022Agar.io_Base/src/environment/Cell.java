@@ -45,7 +45,18 @@ public class Cell {
 
 		while(isOcupied()) {
 			System.out.println("--- [Bloqueio por obstáculo] ---\n "
-					+ "Posição: " + getPosition() 
+					+ "Posição: " + getPosition());
+			//---------- Debug -------------------
+			if(getPlayer().getCurrentStrength() != 0 && getPlayer().getCurrentStrength() != 10) {
+				System.err.println("PLAYER NÃO É UM OBSTÁCULO, condições: ");
+				System.err.println("\n newCellPlayer == null? ");
+				System.err.println(getPlayer()==null);
+				System.err.println("\n newCellPlayer.isObstable() || newCellPlayer.hasWon()? ");
+				System.err.println(getPlayer().isObstable() );
+			}
+			//------------------------------------
+			 
+			System.out.println("--- [Bloqueio por obstáculo] --- "
 					+ "\n Jogador a ocupar: " + getPlayer() 
 					+ "\n Jogador a tentar ocupar: " + player);
 			createThreadInterrupt();

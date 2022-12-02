@@ -30,17 +30,16 @@ public class AutomaticPlayer extends Player {
 
 			//Se o jogador é um dos vencedores, acabar o run e registar no jogo
 			if(hasWon()) {
+				System.err.println("Jogador " + this + " ganhou");
 				game.cdl.countDown();
 				break;
 			}
 
-			//	Apenas players que não estão bloqueados na posição inicial é que fazem move()
+			//Apenas players que não estão bloqueados na posição inicial é que fazem move()
 			if(getCurrentCell()!=null)
 				move();
 
 			game.notifyChange();
-
-
 
 			try {
 				// Fazer com players com maior energia se movam a cada (intervalo*pontos_de_energia) ciclos.
@@ -69,6 +68,7 @@ public class AutomaticPlayer extends Player {
 		if(newCellPlayer == null){
 			newCell.setPlayer(this);
 			currCell.setPlayer(null);
+			this.setPosition(newCoords);
 			return;
 		}
 
