@@ -1,6 +1,6 @@
 package environment;
 
-
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -35,30 +35,6 @@ public class Cell {
 		return player;
 	}
 	
-	
-	//Usar mecanismo de bloqueio diferente ao do InitialPosition
-	public synchronized void setPlayer(Player player) {
-		if(player == null) {
-			disoccupyCell();
-			return;
-		}
-
-		while(isOcupied()) {
-			System.out.println("--- [Bloqueio por obstáculo] ---\n "
-					+ "Posição: " + getPosition() 
-					+ "\n Jogador a ocupar: " + getPlayer() 
-					+ "\n Jogador a tentar ocupar: " + player);
-			createThreadInterrupt();
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				System.out.println("Fui interrompido " + player);
-				return;
-			}
-		}
-		this.player = player;
-	}
-	
 	private void disoccupyCell() {
 		this.player = null;
 		lock.lock();
@@ -69,7 +45,39 @@ public class Cell {
 		}
 	}
 	
-	// Should not be used like this in the initial state: cell might be occupied, must coordinate this operation
+	//Usar mecanismo de bloqueio diferente ao do InitialPosition
+	public synchronized void setPlayer(Player player) {
+		if(player == null) {
+			disoccupyCell();
+			notifyAll();
+			return;
+		}
+		
+		//Player fica bloqueado se a cell já estiver ocupada
+		while(isOcupied()) {
+			if(getPlayer().getCurrentStrength() != 0 && getPlayer().getCurrentStrength() != 10)
+				System.err.println("PLAYER NÃO É UM OBSTÁCULO, condições: " 
+			+ "\n newCellPlayer == null? " + getPlayer()==null
+			+ "\n newCellPlayer.isObstable() || newCellPlayer.hasWon() " + (getPlayer().isObstable() || getPlayer().hasWon())
+			+ "\n ");
+			
+			System.out.println("--- [Bloqueio por obstáculo] --- "
+					+ "\n Jogador a ocupar: " + getPlayer() 
+					+ "\n Jogador a tentar ocupar: " + player);
+			createThreadInterrupt();
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				return;
+			}
+			//Quando o player é acordado, deverá tentar ir para outra posição (não é feito o this.player = player)
+			return;
+		}
+		//A cell está desocupada
+		this.player = player;
+	}
+	
+	
 	public void setPlayerToInitialPosition(Player player) {
 		lock.lock();
 		try {
@@ -82,8 +90,7 @@ public class Cell {
 			//A cell está a tentar ser ocupada
 			while(isOcupied()) {
 				try {
-					System.out.println("--- [Bloqueio na colocação inicial] ---\n "
-							+ "Posição: " + getPosition() 
+					System.out.println("--- [Bloqueio na colocação inicial] --- "
 							+ "\n Jogador a ocupar: " + getPlayer() 
 							+ "\n Jogador a tentar ocupar: " + player);
 					notOcupied.await();
@@ -110,11 +117,10 @@ public class Cell {
             public void run() {
                 try {
                     Thread.sleep(2000);
-                    System.out.println("Passaram 2 seg, a interromper o player");
+                    System.out.println("A ACORDAR: " + playerToInterrupt);
                     playerToInterrupt.interrupt();
 
                 } catch (InterruptedException e) {
-                    System.out.println("C interrupted");
                     return;
                 }
             }

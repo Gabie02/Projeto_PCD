@@ -10,6 +10,7 @@ public class GameGuiServer {
 	public static final int SOCKET = 8080;
 	private List<Thread> clients = new ArrayList<>();
 	private Game game;
+	//A ideia é ter uma thradPool que a cada GAMEINTERVAL envia o estado do jogo a todos os clientes
 //	private ScheduledThreadPoolExecutor = 
 	
 	public GameGuiServer(Game game) {

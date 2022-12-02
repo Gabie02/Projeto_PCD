@@ -20,15 +20,27 @@ public abstract class Player extends Thread {
 	protected byte originalStrength;
 	
 	
+	
 	public Cell getCurrentCell() {
 		for (int x = 0; x < Game.DIMX; x++) 
 			for (int y = 0; y < Game.DIMY; y++) {
-				if(game.board[x][y].isOcupied() && game.board[x][y].getPlayer().equals(this))
-							return game.board[x][y];
+				//Isto tudo é para tentar descobrir o erro
+				boolean playerInCellNotNull = game.board[x][y].isOcupied();
+				try {
+					if(playerInCellNotNull && game.board[x][y].getPlayer().equals(this))
+								return game.board[x][y];
+				} catch (NullPointerException e) {
+					System.err.println(game.board[x][y].toString() 
+							+ " \nplayerInCellNotNull / cellIsOcupied? " + playerInCellNotNull 
+							+ " \nCell.getPlayer(): " + game.board[x][y].getPlayer()
+							+ " \nThread: " + getId()
+							+ " \nthis: " +  this);
+					e.printStackTrace();
+				}
 			}
 		return null;
 	}
-
+	
 	public Player(int id, Game game, byte strength) {
 		super();
 		this.id = id;
@@ -36,12 +48,11 @@ public abstract class Player extends Thread {
 		currentStrength=strength;
 		originalStrength=strength;
 	}
-	//-------- Adições novas -------------
 	
 	@Override
 	public void run() {
-		game.addPlayerToGame(this);
-//		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
+		Coordinate initialPos = game.addPlayerToGame(this);
+		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
 		try {
 			sleep(game.INITIAL_WAITING_TIME);
 		} catch (InterruptedException e1) {}
@@ -52,15 +63,15 @@ public abstract class Player extends Thread {
 	}
 	
 	public boolean isObstable() {
-		return currentStrength == 0;
+		return (currentStrength == 0 || hasWon());
 	}
 	
-	public void setAsObstacle() {
+	private void setAsObstacle() {
 		currentStrength = 0;
 	}
 	
 	public static void settleDisputeBetween(Player p1, Player p2) {
-//		System.out.println("--- [Disputa] --- \n	Entre: \n	" + p1 + "\n	" + p2);
+		System.out.println("--- [Disputa] --- \n	Entre: \n	" + p1 + "\n	" + p2);
 		Player winner = (p1.currentStrength > p2.currentStrength) ? p1 : p2;
 		Player loser = (p1.currentStrength > p2.currentStrength) ? p2 : p1;
 		
@@ -71,10 +82,8 @@ public abstract class Player extends Thread {
 				winner.currentStrength=10 : winner.currentStrength;
 		
 		loser.setAsObstacle();
-//		System.out.println("	Vencedor da disputa id=" + winner.id);
+		System.out.println("	Vencedor da disputa id=" + winner.id);
 	}
-	
-	//-----------------------------------
 	
 	public abstract boolean isHumanPlayer();
 	
@@ -109,7 +118,6 @@ public abstract class Player extends Thread {
 	public byte getCurrentStrength() {
 		return currentStrength;
 	}
-
 
 	public int getIdentification() {
 		return id;

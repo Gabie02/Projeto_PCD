@@ -24,22 +24,22 @@ public class AutomaticPlayer extends Player {
 		super.run();
 		while(true) {
 			
-			//Se já estiver morto, acabar o run
-			if(isObstable())
-				break;
-
 			//Se o jogador é um dos vencedores, acabar o run e registar no jogo
 			if(hasWon()) {
+				System.err.println(this + " Acabou o jogo");
 				game.cdl.countDown();
 				break;
 			}
+			
+			//Se já estiver morto, acabar o run
+			if(isObstable())
+				break;
 
 			//	Apenas players que não estão bloqueados na posição inicial é que fazem move()
 			if(getCurrentCell()!=null)
 				move();
 
 			game.notifyChange();
-
 
 
 			try {
@@ -72,8 +72,8 @@ public class AutomaticPlayer extends Player {
 			return;
 		}
 
-		//	Se o movimento for para um posição que estiver ocupada com um jogador morto (obstáculo).
-		if(newCellPlayer.isObstable() || newCellPlayer.hasWon()) {
+		//	Se o movimento for para um posição que estiver ocupada com um jogador morto/que ganhou (obstáculo).
+		if(newCellPlayer.isObstable()) {
 			newCell.setPlayer(this);
 			return;
 		} 

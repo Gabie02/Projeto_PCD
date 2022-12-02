@@ -35,23 +35,24 @@ public class Game extends Observable {
 	/** 
 	 * @param player 
 	 */
-	public void addPlayerToGame(Player player) {
+	public Coordinate addPlayerToGame(Player player) {
 		Cell initialPos=getRandomCell();
 		initialPos.setPlayerToInitialPosition(player);
 		
 		// To update GUI
 		notifyChange();
+		
+		return initialPos.getPosition();
 	}
 
 	public void init() {
-		//Depois trocar por NUM_PLAYERS
-		for (int i = 1; i <= 20; i++) {
+		//Depois trocar por NUM_PLAYERS - NUM_HUMAN_PLAYERS
+		for (int i = 1; i <= 50; i++) {
 			int randomEnergy = 1 + (int)(Math.random() * MAX_INITIAL_STRENGTH);
 			new AutomaticPlayer(i, this, (byte)randomEnergy).start();
 		}
-			//Tentativa CountDownLatch
-			gameIsOver();
-		
+		//Tentativa CountDownLatch
+		gameIsOver();
 	}
 	
 	private void gameIsOver() {

@@ -41,7 +41,7 @@ public class GameGuiClient {
 		RIGHT = right;
 		UP = up;
 		DOWN = down;
-//		keyListener = new BoardJComponent(null);
+		keyListener = new BoardJComponent(null);
 	}
 
 	// Vão ser recebidos 6 argumentos: endereço e porto da aplicação principal, 
@@ -79,8 +79,11 @@ public class GameGuiClient {
 	
 	public void runClient() {
 		try {
-			//Apanha as keys do player
 			connectToServer();
+			while(true)	{
+				
+				
+			}
 			
 		} catch (IOException e) {// ERRO...
 		} finally {//a fechar...
@@ -102,7 +105,7 @@ public class GameGuiClient {
 	}
 	
 	private void sendDirection() {
-//		lastKeyPressed = gui.BoardJComponent.getLas
+		lastKeyPressed = keyListener.getLastPressedDirection();
 	}
 	
 }
