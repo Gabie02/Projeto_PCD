@@ -22,7 +22,7 @@ public class AutomaticPlayer extends Player {
 	public void run() {
 		//	O sleep é feito agora na classe "pai", Player
 		super.run();
-		while(true) {
+		while(!game.gameOver) {
 			
 			//Se o jogador é um dos vencedores, acabar o run e registar no jogo
 			if(hasWon()) {
