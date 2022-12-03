@@ -70,10 +70,11 @@ public class Cell {
 			try {
 				wait();
 			} catch (InterruptedException e) {
+				//Quando o player é acordado, deverá tentar ir para outra posição (não é feito o this.player = player)
 				return;
 			}
-			//Quando o player é acordado, deverá tentar ir para outra posição (não é feito o this.player = player)
-			return;
+			
+			
 		}
 		//A cell está desocupada
 		this.player = player;
