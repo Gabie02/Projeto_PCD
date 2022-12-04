@@ -35,7 +35,6 @@ public class Cell {
 		return player;
 	}
 	
-	
 	//Usar mecanismo de bloqueio diferente ao do InitialPosition
 	public synchronized void setPlayer(Player player) {
 		if(player == null) {
@@ -44,8 +43,6 @@ public class Cell {
 		}
 
 		while(isOcupied()) {
-			System.out.println("--- [Bloqueio por obstáculo] ---\n "
-					+ "Posição: " + getPosition());
 			//---------- Debug -------------------
 			if(getPlayer().getCurrentStrength() != 0 && getPlayer().getCurrentStrength() != 10) {
 				System.err.println("PLAYER NÃO É UM OBSTÁCULO, condições: ");
