@@ -74,7 +74,6 @@ public class Cell {
 				return;
 			}
 			
-			
 		}
 		//A cell está desocupada
 		this.player = player;
@@ -83,29 +82,21 @@ public class Cell {
 	
 	public void setPlayerToInitialPosition(Player player) {
 		lock.lock();
-		try {
-			//A cell está a ser desocupada
-			if(player == null) {
-				disoccupyCell();
-				return;
+
+		//A cell está a tentar ser ocupada
+		while(isOcupied()) {
+			try {
+				System.out.println("--- [Bloqueio na colocação inicial] --- "
+						+ "\n Jogador a ocupar: " + getPlayer() 
+						+ "\n Jogador a tentar ocupar: " + player);
+				notOcupied.await();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			
-			//A cell está a tentar ser ocupada
-			while(isOcupied()) {
-				try {
-					System.out.println("--- [Bloqueio na colocação inicial] --- "
-							+ "\n Jogador a ocupar: " + getPlayer() 
-							+ "\n Jogador a tentar ocupar: " + player);
-					notOcupied.await();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			this.player = player;
-		} finally {
-			lock.unlock();
 		}
-		
+		this.player = player;
+		lock.unlock();
+
 	}
 
 	@Override
