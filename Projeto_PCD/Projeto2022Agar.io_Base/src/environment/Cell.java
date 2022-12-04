@@ -83,13 +83,12 @@ public class Cell {
 	
 	public void setPlayerToInitialPosition(Player player) {
 		lock.lock();
-		// Não sei se isto é necessario
-//		try {
-//			//A cell está a ser desocupada
-//			if(player == null) {
-//				disoccupyCell();
-//				return;
-//			}
+		try {
+			//A cell está a ser desocupada
+			if(player == null) {
+				disoccupyCell();
+				return;
+			}
 			
 			//A cell está a tentar ser ocupada
 			while(isOcupied()) {
@@ -103,9 +102,9 @@ public class Cell {
 				}
 			}
 			this.player = player;
-//		} finally {
+		} finally {
 			lock.unlock();
-//		}
+		}
 		
 	}
 
