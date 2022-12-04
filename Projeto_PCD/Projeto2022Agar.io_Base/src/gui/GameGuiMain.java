@@ -8,6 +8,7 @@ import game.GameGuiServer;
 import game.AutomaticPlayer;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import environment.Cell;
 import environment.Coordinate;
@@ -51,6 +52,11 @@ public class GameGuiMain implements Observer {
 	
 	}
 
+	public static void gameOverMessage() {
+		 JOptionPane.showMessageDialog(null, "The game is over!", "The game is over!", JOptionPane.INFORMATION_MESSAGE);
+		 System.exit(0);
+	}
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		boardGui.repaint();

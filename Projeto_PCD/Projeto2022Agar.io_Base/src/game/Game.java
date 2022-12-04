@@ -4,6 +4,7 @@ package game;
 import java.util.Observable;
 import environment.Cell;
 import environment.Coordinate;
+import gui.GameGuiMain;
 
 public class Game extends Observable {
 
@@ -61,6 +62,7 @@ public class Game extends Observable {
 			cdl.await();
 			System.err.println("ACABOU O JOGO");
 			gameOver = true;
+			GameGuiMain.gameOverMessage();
 			return;
 			
 		} catch (InterruptedException e) {

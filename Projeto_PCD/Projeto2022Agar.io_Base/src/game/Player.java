@@ -52,7 +52,7 @@ public abstract class Player extends Thread {
 	@Override
 	public void run() {
 		Coordinate initialPos = game.addPlayerToGame(this);
-		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
+//		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
 		try {
 			sleep(game.INITIAL_WAITING_TIME);
 		} catch (InterruptedException e1) {}
