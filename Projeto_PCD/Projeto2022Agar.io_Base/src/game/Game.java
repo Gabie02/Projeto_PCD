@@ -88,4 +88,8 @@ public class Game extends Observable {
 		Cell newCell=getCell(new Coordinate((int)(Math.random()*Game.DIMX),(int)(Math.random()*Game.DIMY)));
 		return newCell; 
 	}
+
+	public Cell[][] getBoard() {
+		return board;
+	}
 }
