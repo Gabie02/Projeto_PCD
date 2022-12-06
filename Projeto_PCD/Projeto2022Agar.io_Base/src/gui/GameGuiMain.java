@@ -4,18 +4,14 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import game.Game;
-import game.AutomaticPlayer;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import environment.Cell;
-import environment.Coordinate;
-
 public class GameGuiMain implements Observer {
-	private JFrame frame = new JFrame("pcd.io");
-	private BoardJComponent boardGui;
-	private static Game game;
+	protected JFrame frame = new JFrame("pcd.io");
+	protected BoardJComponent boardGui;
+	protected static Game game;
 
 	public GameGuiMain() {
 		super();
@@ -28,7 +24,6 @@ public class GameGuiMain implements Observer {
 	private void buildGui() {
 		boardGui = new BoardJComponent(game);
 		frame.add(boardGui);
-
 
 		frame.setSize(800,800);
 		frame.setLocation(0, 150);
@@ -49,10 +44,6 @@ public class GameGuiMain implements Observer {
 		//Adiciona todos os players ao jogo
 		game.init();		
 	
-	}
-
-	public BoardJComponent getBoardJComponent() {
-		return boardGui;
 	}
 	
 	public static void gameOverMessage() {

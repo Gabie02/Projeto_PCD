@@ -29,10 +29,10 @@ public class GameGuiClient {
 	private int UP;
 	private int DOWN;
 	
-	private HumanPlayer player;
-	private Direction lastKeyPressed;
+//	private HumanPlayer player;
+	private Direction lastDirection;
 	private GameGuiServer server;
-	private GameGuiMain gameGui;
+	private ClientGameGuiMain gameGui;
 	private BoardJComponent keyListener = gameGui.getBoardJComponent();
 
 	public GameGuiClient(int socket, String address, int left, int right, int up,
@@ -75,13 +75,17 @@ public class GameGuiClient {
 		
 	}
 	
+//	public HumanPlayer getHumanPlayer() {
+//		return player;
+//	}
+	
 	public void runClient() {
 		try {
 			//Apanha as keys do player
 			connectToServer();
 			
 			//Inicia o jogo e cria o board
-			gameGui = new GameGuiMain();
+			gameGui = new ClientGameGuiMain();
 			gameGui.init();
 			
 			//Fica a receber o gameState a cada intervalo
@@ -98,6 +102,15 @@ public class GameGuiClient {
 
 	private void receiveGameState() {
 		while(true) {
+			
+			try {
+				
+				GameState gameState = (GameState)in.readObject();
+				
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 		
@@ -117,11 +130,11 @@ public class GameGuiClient {
 	}
 	
 	private void sendDirection() {
-		lastKeyPressed = keyListener.getLastPressedDirection();
+		lastDirection = keyListener.getLastPressedDirection();
+		
 		// Mandar ao servidor
-		
-		//(...)
-		
+		out.print(lastDirection.name());
+
 		keyListener.clearLastPressedDirection();
 	}
 	

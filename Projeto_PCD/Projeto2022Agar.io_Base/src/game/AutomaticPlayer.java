@@ -30,7 +30,7 @@ public class AutomaticPlayer extends Player {
 
 			//Se o jogador é um dos vencedores, acabar o run e registar no jogo
 			if(hasWon()) {
-				System.err.println("Jogador " + this + " ganhou");
+//				System.err.println("Jogador " + this + " ganhou");
 				game.cdl.countDown();
 				break;
 			}

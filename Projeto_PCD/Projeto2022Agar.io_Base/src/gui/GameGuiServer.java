@@ -10,6 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import game.Game;
+import game.HumanPlayer;
 
 public class GameGuiServer {
 	public static final int SOCKET = 8080;
@@ -35,6 +36,9 @@ public class GameGuiServer {
 				Socket socket = ss.accept();
 				GameDealWithClient t = new GameDealWithClient(socket);
 				clients.add(t);
+				
+				game.addPlayerToGame(new HumanPlayer(t, (int)t.getId(), game));
+				
 				t.start();
 			}			
 		} finally {

@@ -24,6 +24,19 @@ public class Game extends Observable {
 	public boolean gameOver = false;
 
 	protected Cell[][] board;
+	
+	//-------- Game como singleton ----------
+	
+//	private static Game game_instance = null;
+//	
+//	public static Game getInstance() {
+//		if (game_instance == null)
+//            game_instance = new Game();
+//  
+//        return game_instance;
+//	}
+	
+	//---------------------------------------
 
 	public Game() {
 		board = new Cell[Game.DIMX][Game.DIMY];
