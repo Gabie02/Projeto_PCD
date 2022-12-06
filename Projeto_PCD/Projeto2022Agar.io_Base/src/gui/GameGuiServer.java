@@ -31,15 +31,19 @@ public class GameGuiServer {
 	//Método que irá estar sempre à escuta no canal à espera dos clientes
 	public void startServing() throws IOException {
 		ServerSocket ss = new ServerSocket(SOCKET);
+		int count = 0;
 		try {
-			while(true){
+			while(!game.gameOver){
+				
 				Socket socket = ss.accept();
-				GameDealWithClient t = new GameDealWithClient(socket);
+				
+				HumanPlayer human = new HumanPlayer(90 + count, game);
+				
+				GameDealWithClient t = new GameDealWithClient(socket, human);
 				clients.add(t);
-				
-				game.addPlayerToGame(new HumanPlayer(t, (int)t.getId(), game));
-				
 				t.start();
+				human.start();
+				count++;
 			}			
 		} finally {
 			ss.close();

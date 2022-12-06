@@ -32,6 +32,12 @@ public class GameGuiMain implements Observer {
 
 	public void init()  {
 		frame.setVisible(true);
+		try {
+			GameGuiServer server = new GameGuiServer(game);
+			server.startServing();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		// Demo players, should be deleted
 		try {
@@ -58,12 +64,6 @@ public class GameGuiMain implements Observer {
 
 	public static void main(String[] args) {
 		new GameGuiMain().init();
-		try {
-			GameGuiServer server = new GameGuiServer(game);
-			server.startServing();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

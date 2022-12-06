@@ -83,6 +83,9 @@ public class Game extends Observable {
 		}
 	}
 
+	public void setBoard(Cell[][] newBoard) {
+		board = newBoard;
+	}
 
 	
 	public Cell getCell(Coordinate at) {

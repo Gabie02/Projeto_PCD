@@ -3,16 +3,13 @@ package game;
 import environment.Cell;
 import environment.Coordinate;
 import environment.Direction;
-import gui.GameDealWithClient;
 
 public class HumanPlayer extends Player {
 	
-//	private Direction lastSentDirection;
-	private GameDealWithClient client;
+	private Direction lastSentDirection;
 	
-	public HumanPlayer(GameDealWithClient client, int id, Game game) {
+	public HumanPlayer(int id, Game game) {
 		super(id, game, (byte)5);
-		this.client = client;
 	}
 
 	@Override
@@ -37,24 +34,22 @@ public class HumanPlayer extends Player {
 				break;
 			}
 
-			//Apenas players que não estão bloqueados na posição inicial é que fazem move()
-			if(getCurrentCell()!=null)
+			if(lastSentDirection!=null)
 				move();
-
+			
 			game.notifyChange();
-
-			try {
-				// Fazer com players com maior energia se movam a cada (intervalo*pontos_de_energia) ciclos.
-				sleep(Game.REFRESH_INTERVAL * (int)(originalStrength));
-			} catch (InterruptedException e) {}
 		}
+	}
+	
+	public void setDirection(Direction dir) {
+		lastSentDirection = dir;
 	}
 
 	
 	@Override
 	public void move() {
 		Cell currCell = getCurrentCell();
-		Direction dir = client.getLastSentDirection();
+		Direction dir = lastSentDirection;
 
 		Coordinate oldCoords = currCell.getPosition();
 		Coordinate newCoords = oldCoords.translate(dir.getVector());

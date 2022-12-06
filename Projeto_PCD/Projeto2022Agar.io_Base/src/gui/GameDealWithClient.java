@@ -8,16 +8,18 @@ import java.net.Socket;
 
 import environment.Cell;
 import environment.Direction;
+import game.HumanPlayer;
 
 public class GameDealWithClient extends Thread {
 	
-	private Direction lastSentDirection;
+	private HumanPlayer player;
 	private GameGuiClient client;
 	private BufferedReader in;
 	private ObjectOutputStream out;
 	
-	public GameDealWithClient(Socket socket) throws IOException {
+	public GameDealWithClient(Socket socket, HumanPlayer player) throws IOException {
 		doConnections(socket);
+		this.player = player;
 	}
 	@Override
 	public void run() {
@@ -36,23 +38,16 @@ public class GameDealWithClient extends Thread {
 		while (true) {
 			//Receber as teclas do cliente e enviar ao jogo
 			try {
-				
 				String lastDirection = in.readLine();
-				
 				Direction dir = Direction.valueOf(lastDirection);
-				
-				if(dir == null)
-					System.err.println("ERRO AO RECEBER A DIREÇÃO DO CLIENTE");
-				
+//				if(dir == null)
+//					System.err.println("ERRO AO RECEBER A DIREÇÃO DO CLIENTE");
+				player.setDirection(dir);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	public Direction getLastSentDirection() {
-		return lastSentDirection;
 	}
 
 	//Serializa o objeto
