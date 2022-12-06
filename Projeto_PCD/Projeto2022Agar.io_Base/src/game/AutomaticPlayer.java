@@ -22,7 +22,7 @@ public class AutomaticPlayer extends Player {
 	public void run() {
 		//	O sleep é feito agora na classe "pai", Player
 		super.run();
-		while(true) {
+		while(!game.gameOver) {
 			
 			//Se já estiver morto, acabar o run
 			if(isObstable())

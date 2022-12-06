@@ -3,6 +3,7 @@ package game;
 import java.util.Observable;
 import environment.Cell;
 import environment.Coordinate;
+import gui.GameGuiMain;
 
 public class Game extends Observable {
 
@@ -20,6 +21,7 @@ public class Game extends Observable {
 	public static final int NUM_POINTS_TO_WIN = 10;
 	//Adicao CountDownLatch
 	public CountDownLatch cdl = new CountDownLatch(NUM_FINISHED_PLAYERS_TO_END_GAME);
+	public boolean gameOver = false;
 
 	protected Cell[][] board;
 
@@ -57,8 +59,9 @@ public class Game extends Observable {
 	private void gameIsOver() {
 		try {
 			cdl.await();
-			System.err.println("----- ACABOU O JOGO -----");
-			System.exit(0);
+			System.err.println("ACABOU O JOGO");
+			gameOver = true;
+			GameGuiMain.gameOverMessage();
 			return;
 			
 		} catch (InterruptedException e) {
@@ -66,6 +69,8 @@ public class Game extends Observable {
 			return;
 		}
 	}
+
+
 	
 	public Cell getCell(Coordinate at) {
 		return board[at.x][at.y];

@@ -1,41 +1,43 @@
-package game;
+package gui;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.InetAddress;
+import java.io.ObjectInputStream;
 import java.net.Socket;
+
+import environment.Cell;
 
 public class GameDealWithClient extends Thread {
 	private BufferedReader in;
-	private PrintWriter out;
+	private ObjectInputStream out;
 	
 	public GameDealWithClient(Socket socket) throws IOException {
 		doConnections(socket);
 	}
 	@Override
 	public void run() {
-		try {
-			serve();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		serve();
 	}
 
 	void doConnections(Socket socket) throws IOException {
+		//O in é um canal de texto
 		in = new BufferedReader(new InputStreamReader(
 				socket.getInputStream()));
-		out = new PrintWriter(new BufferedWriter(
-				new OutputStreamWriter(socket.getOutputStream())),
-				true);
+		//O out é um canal de objetos (é necessário fazer a limpeza da cache antes de enviar um novo objeto)
+		out = new ObjectInputStream(socket.getInputStream());
 	}
-	private void serve() throws IOException {
+	private void serve() {
 		while (true) {
+			//Receber as teclas do cliente e enviar ao jogo
 			
-			//A cada Game.REFRESH_INTERVAL enviar o estado do jogo do cliente e receber a última direção
+			
 		}
 	}
+	
+	//Serializa o objeto
+	public void sendGameState(GameState gameState) {
+		
+	}
+	
 }

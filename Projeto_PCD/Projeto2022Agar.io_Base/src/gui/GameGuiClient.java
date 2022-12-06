@@ -1,9 +1,10 @@
-package game;
+package gui;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -12,13 +13,12 @@ import java.net.Socket;
 import javax.swing.event.MenuKeyEvent;
 
 import environment.Direction;
-import gui.GameGuiMain;
+import game.HumanPlayer;
 
 import java.awt.event.KeyEvent;
-import gui.BoardJComponent;
 
 public class GameGuiClient {
-	private BufferedReader in;
+	private ObjectInputStream in;
 	private PrintWriter out;
 	private Socket socket;
 	private int socketNum;
@@ -32,8 +32,8 @@ public class GameGuiClient {
 	private HumanPlayer player;
 	private Direction lastKeyPressed;
 	private GameGuiServer server;
-	private BoardJComponent keyListener;
-
+	private GameGuiMain gameGui;
+	private BoardJComponent keyListener = gameGui.getBoardJComponent();
 
 	public GameGuiClient(int socket, String address, int left, int right, int up,
 			int down) {
@@ -41,7 +41,6 @@ public class GameGuiClient {
 		RIGHT = right;
 		UP = up;
 		DOWN = down;
-//		keyListener = new BoardJComponent(null);
 	}
 
 	// Vão ser recebidos 6 argumentos: endereço e porto da aplicação principal, 
@@ -74,13 +73,19 @@ public class GameGuiClient {
 					+ "	5. Tecla de cima;\n"  
 					+ "	6. Tecla de baixo;\n");
 		
-		
 	}
 	
 	public void runClient() {
 		try {
 			//Apanha as keys do player
 			connectToServer();
+			
+			//Inicia o jogo e cria o board
+			gameGui = new GameGuiMain();
+			gameGui.init();
+			
+			//Fica a receber o gameState a cada intervalo
+			receiveGameState();
 			
 		} catch (IOException e) {// ERRO...
 		} finally {//a fechar...
@@ -91,18 +96,33 @@ public class GameGuiClient {
 		}
 	}
 
+	private void receiveGameState() {
+		while(true) {
+			
+		}
+		
+	}
+
 	void connectToServer() throws IOException {
 		InetAddress endereco = InetAddress.getByName(address);
 		socket = new Socket(endereco, socketNum);
-		in = new BufferedReader(new InputStreamReader(
-				socket.getInputStream()));
+		
+		//O in é um canal de objetos
+		in = new ObjectInputStream (socket.getInputStream());
+		
+		//O out é um canal de texto
 		out = new PrintWriter(new BufferedWriter(
 				new OutputStreamWriter(socket.getOutputStream())),
 				true);
 	}
 	
 	private void sendDirection() {
-//		lastKeyPressed = gui.BoardJComponent.getLas
+		lastKeyPressed = keyListener.getLastPressedDirection();
+		// Mandar ao servidor
+		
+		//(...)
+		
+		keyListener.clearLastPressedDirection();
 	}
 	
 }

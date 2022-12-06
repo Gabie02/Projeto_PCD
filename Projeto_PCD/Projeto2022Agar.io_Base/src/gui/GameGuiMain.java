@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import game.Game;
-import game.GameGuiServer;
 import game.AutomaticPlayer;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import environment.Cell;
 import environment.Coordinate;
@@ -51,14 +51,22 @@ public class GameGuiMain implements Observer {
 	
 	}
 
+	public BoardJComponent getBoardJComponent() {
+		return boardGui;
+	}
+	
+	public static void gameOverMessage() {
+		 JOptionPane.showMessageDialog(null, "The game is over!", "The game is over!", JOptionPane.INFORMATION_MESSAGE);
+		 System.exit(0);
+	}
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		boardGui.repaint();
 	}
-	
+
 	public static void main(String[] args) {
-		GameGuiMain gameMain = new GameGuiMain();
-		gameMain.init();
+		new GameGuiMain().init();
 		try {
 			GameGuiServer server = new GameGuiServer(game);
 			server.startServing();
