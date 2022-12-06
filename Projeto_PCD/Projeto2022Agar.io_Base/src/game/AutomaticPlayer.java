@@ -68,7 +68,7 @@ public class AutomaticPlayer extends Player {
 		if(newCellPlayer == null){
 			newCell.setPlayer(this);
 			currCell.setPlayer(null);
-			this.setPosition(newCoords);
+//			this.setPosition(newCoords);
 			return;
 		}
 

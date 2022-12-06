@@ -21,7 +21,7 @@ public class GameGuiMain implements Observer {
 		super();
 		game = new Game();
 		game.addObserver(this);
-
+		
 		buildGui();
 	}
 

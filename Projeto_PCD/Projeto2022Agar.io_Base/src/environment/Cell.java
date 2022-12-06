@@ -30,7 +30,6 @@ public class Cell {
 		return player!=null;
 	}
 
-
 	public Player getPlayer() {
 		return player;
 	}
@@ -109,11 +108,10 @@ public class Cell {
             public void run() {
                 try {
                     Thread.sleep(2000);
-                    System.out.println("Passaram 2 seg, a interromper o player");
+                    System.out.println("Passaram 2 seg, a interromper " + playerToInterrupt);
                     playerToInterrupt.interrupt();
 
                 } catch (InterruptedException e) {
-                    System.out.println("C interrupted");
                     return;
                 }
             }

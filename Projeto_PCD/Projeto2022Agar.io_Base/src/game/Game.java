@@ -1,5 +1,6 @@
 package game;
 
+import java.util.Arrays;
 import java.util.Observable;
 import environment.Cell;
 import environment.Coordinate;
@@ -19,7 +20,6 @@ public class Game extends Observable {
 	public static final long INITIAL_WAITING_TIME = 10000;
 	
 	public static final int NUM_POINTS_TO_WIN = 10;
-	//Adicao CountDownLatch
 	public CountDownLatch cdl = new CountDownLatch(NUM_FINISHED_PLAYERS_TO_END_GAME);
 	public boolean gameOver = false;
 
@@ -90,6 +90,11 @@ public class Game extends Observable {
 	}
 
 	public Cell[][] getBoard() {
-		return board;
+		Cell[][] boardCopy = new Cell[DIMX][];
+		 for (int i = 0; i < DIMX; ++i) {
+             boardCopy[i] = new Cell[DIMY];
+             System.arraycopy(board[i], 0, boardCopy[i], 0, DIMY);
+        }
+		return board;	
 	}
 }

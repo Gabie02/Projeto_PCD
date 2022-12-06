@@ -19,18 +19,32 @@ public abstract class Player extends Thread {
 	private byte currentStrength;
 	protected byte originalStrength;
 	
-	private Coordinate position;
+//	private Coordinate position;
+	
+//	public Cell getCurrentCell() {
+//		//Este if serve para evitar um NullPointerException
+//		if(position == null)
+//			return null;
+//		return game.getCell(position);
+//	}
 	
 	public Cell getCurrentCell() {
-		//Este if serve para evitar um NullPointerException
-		if(position == null)
-			return null;
-		return game.getCell(position);
+		for (int i = 0; i < game.DIMX; i++) {
+			for (int j = 0; j < game.DIMY; j++) {
+				
+				Cell cell = game.getCell(new Coordinate(i, j));
+				
+				if(cell.isOcupied() && cell.getPlayer().equals(this))
+					return cell;
+			}
+			
+		}
+		return null;
 	}
 	
-	protected void setPosition(Coordinate newPosCoordinate) {
-		position = newPosCoordinate;
-	}
+//	protected void setPosition(Coordinate newPosCoordinate) {
+//		position = newPosCoordinate;
+//	}
 
 	public Player(int id, Game game, byte strength) {
 		super();
@@ -44,7 +58,7 @@ public abstract class Player extends Thread {
 	public void run() {
 		Coordinate initialPos = game.addPlayerToGame(this);
 //		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
-		this.setPosition(initialPos);
+//		this.setPosition(initialPos);
 		try {
 			sleep(game.INITIAL_WAITING_TIME);
 		} catch (InterruptedException e1) {}
