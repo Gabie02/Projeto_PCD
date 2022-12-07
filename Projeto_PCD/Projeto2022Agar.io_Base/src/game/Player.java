@@ -29,8 +29,8 @@ public abstract class Player extends Thread {
 //	}
 	
 	public Cell getCurrentCell() {
-		for (int i = 0; i < game.DIMX; i++) {
-			for (int j = 0; j < game.DIMY; j++) {
+		for (int i = 0; i < Game.DIMX; i++) {
+			for (int j = 0; j < Game.DIMY; j++) {
 				
 				Cell cell = game.getCell(new Coordinate(i, j));
 				
@@ -56,16 +56,16 @@ public abstract class Player extends Thread {
 	
 	@Override
 	public void run() {
-		Coordinate initialPos = game.addPlayerToGame(this);
+		game.addPlayerToGame(this);
 //		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
 //		this.setPosition(initialPos);
 		try {
-			sleep(game.INITIAL_WAITING_TIME);
+			sleep(Game.INITIAL_WAITING_TIME);
 		} catch (InterruptedException e1) {}
 	}
 	
 	public boolean hasWon() {
-		return currentStrength == game.NUM_POINTS_TO_WIN;
+		return currentStrength == Game.NUM_POINTS_TO_WIN;
 	}
 	
 	public boolean isObstable() {

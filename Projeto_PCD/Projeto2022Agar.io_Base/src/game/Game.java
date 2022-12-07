@@ -49,14 +49,14 @@ public class Game extends Observable {
 	/** 
 	 * @param player 
 	 */
-	public Coordinate addPlayerToGame(Player player) {
+	public void addPlayerToGame(Player player) {
 		Cell initialPos=getRandomCell();
 		initialPos.setPlayerToInitialPosition(player);
 		
 		// To update GUI
 		notifyChange();
 		
-		return initialPos.getPosition();
+		return;
 	}
 
 	public void init() {

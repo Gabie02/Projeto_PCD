@@ -107,7 +107,7 @@ public class Cell {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(Game.MAX_WAITING_TIME_FOR_MOVE);
                     System.out.println("Passaram 2 seg, a interromper " + playerToInterrupt);
                     playerToInterrupt.interrupt();
 
@@ -117,8 +117,6 @@ public class Cell {
             }
         }.start();
 	}
-	
-	
 	
 	
 
