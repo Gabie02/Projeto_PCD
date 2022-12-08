@@ -32,20 +32,20 @@ public class GameGuiMain implements Observer {
 
 	public void init()  {
 		frame.setVisible(true);
-		try {
-			GameGuiServer server = new GameGuiServer(game);
-			server.startServing();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		// Demo players, should be deleted
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			GameGuiServer server = new GameGuiServer(game);
+//			server.startServing();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		// Demo players, should be deleted
+//		try {
+//			Thread.sleep(3000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		//Adiciona todos os players ao jogo
 		game.init();		

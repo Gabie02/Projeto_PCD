@@ -59,9 +59,12 @@ public abstract class Player extends Thread {
 		game.addPlayerToGame(this);
 //		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
 //		this.setPosition(initialPos);
+		if(!game.hasStarted) {
 		try {
 			sleep(Game.INITIAL_WAITING_TIME);
 		} catch (InterruptedException e1) {}
+		}
+		game.hasStarted = true;
 	}
 	
 	public boolean hasWon() {

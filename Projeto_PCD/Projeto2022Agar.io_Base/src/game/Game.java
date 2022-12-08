@@ -22,6 +22,8 @@ public class Game extends Observable {
 	public static final int NUM_POINTS_TO_WIN = 10;
 	public CountDownLatch cdl = new CountDownLatch(NUM_FINISHED_PLAYERS_TO_END_GAME);
 	public boolean gameOver = false;
+	//TESTE
+	public boolean hasStarted = false;
 
 	protected Cell[][] board;
 	
