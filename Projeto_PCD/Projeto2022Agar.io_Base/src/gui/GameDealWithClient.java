@@ -16,22 +16,32 @@ public class GameDealWithClient extends Thread {
 	private GameGuiClient client;
 	private BufferedReader in;
 	private ObjectOutputStream out;
+	private Socket socket;
 	
-	public GameDealWithClient(Socket socket, HumanPlayer player) throws IOException {
-		doConnections(socket);
+	public GameDealWithClient(Socket socket, HumanPlayer player){
 		this.player = player;
+		this.socket = socket;
 	}
 	@Override
 	public void run() {
+		try {
+			doConnections(socket);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Vou servir: ");
 		serve();
 	}
 
 	void doConnections(Socket socket) throws IOException {
+		
 		//O in é um canal de texto
 		in = new BufferedReader(new InputStreamReader(
 				socket.getInputStream()));
 		//O out é um canal de objetos (é necessário fazer a limpeza da cache antes de enviar um novo objeto)
 		out = new ObjectOutputStream(socket.getOutputStream());
+		
+		System.out.println("Conexões do lado do SERVER feitas para o socket: " + socket.toString());
 	}
 	
 	private void serve() {
@@ -39,12 +49,15 @@ public class GameDealWithClient extends Thread {
 			//Receber as teclas do cliente e enviar ao jogo
 			try {
 				String lastDirection = in.readLine();
+				System.out.println("Direção recebida: " + lastDirection);
+				
+				//Caso o cliente não tenha precionado nenhuma tecla, mandar direção null
+				if(lastDirection==null) 
+					continue;
 				Direction dir = Direction.valueOf(lastDirection);
-//				if(dir == null)
-//					System.err.println("ERRO AO RECEBER A DIREÇÃO DO CLIENTE");
 				player.setDirection(dir);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

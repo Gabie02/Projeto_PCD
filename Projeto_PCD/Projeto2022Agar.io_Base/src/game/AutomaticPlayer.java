@@ -84,24 +84,7 @@ public class AutomaticPlayer extends Player {
 
 	private Direction generateRandomDirection() {
 		int random = ((int) (Math.random()*4));
-		Direction dir = Direction.UP;
-		switch(random) {
-		case 0: //LEFT
-			dir = Direction.LEFT;
-			break;
-
-		case 1: //DOWN
-			dir = Direction.DOWN;
-			break;
-
-		case 2: //RIGHT
-			dir = Direction.RIGHT;
-			break;
-
-		case 3: //UP
-			dir = Direction.UP;
-			break;
-		}
+		Direction dir = Direction.values()[random];
 		return dir;
 	}
 

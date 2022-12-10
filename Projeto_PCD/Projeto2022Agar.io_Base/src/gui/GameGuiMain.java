@@ -12,6 +12,7 @@ public class GameGuiMain implements Observer {
 	protected JFrame frame = new JFrame("pcd.io");
 	protected BoardJComponent boardGui;
 	protected static Game game;
+	private GameGuiServer server;
 
 	public GameGuiMain() {
 		super();
@@ -21,8 +22,8 @@ public class GameGuiMain implements Observer {
 		buildGui();
 	}
 
-	private void buildGui() {
-		boardGui = new BoardJComponent(game);
+	protected void buildGui() {
+		boardGui = new BoardJComponent(game, false);
 		frame.add(boardGui);
 
 		frame.setSize(800,800);
@@ -32,29 +33,16 @@ public class GameGuiMain implements Observer {
 
 	public void init()  {
 		frame.setVisible(true);
-		try {
-			GameGuiServer server = new GameGuiServer(game);
-			server.startServing();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-//
-//		// Demo players, should be deleted
-//		try {
-//			Thread.sleep(3000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
+		server = new GameGuiServer(game);
+		server.start();
 		//Adiciona todos os players ao jogo
 		game.init();		
 	
 	}
 	
 	public static void gameOverMessage() {
-		 JOptionPane.showMessageDialog(null, "The game is over!", "The game is over!", JOptionPane.INFORMATION_MESSAGE);
-		 System.exit(0);
+		 JOptionPane.showMessageDialog(null, "Game Over", "The game is over!", JOptionPane.INFORMATION_MESSAGE);
+			 System.exit(0);
 	}
 	
 	@Override

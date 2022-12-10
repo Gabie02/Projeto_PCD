@@ -34,7 +34,7 @@ public abstract class Player extends Thread {
 				
 				Cell cell = game.getCell(new Coordinate(i, j));
 				
-				if(cell.isOcupied() && cell.getPlayer().equals(this))
+				if(cell.getPlayer()!=null && cell.getPlayer().equals(this))
 					return cell;
 			}
 			

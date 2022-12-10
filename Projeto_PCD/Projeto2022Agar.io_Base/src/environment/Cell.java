@@ -44,16 +44,16 @@ public class Cell {
 		//Player fica bloqueado se a cell já estiver ocupada
 		while(isOcupied()) {
 			if(getPlayer().getCurrentStrength() != 0 && getPlayer().getCurrentStrength() != 10) {
-				System.err.println("PLAYER NÃO É UM OBSTÁCULO, condições: ");
-				System.err.println("newCellPlayer == null? ");
-				System.err.println(getPlayer() == null);
-				System.err.println("newCellPlayer.isObstable() || newCellPlayer.hasWon()");
-				System.err.println((getPlayer().isObstable() || getPlayer().hasWon()));
+//				System.err.println("PLAYER NÃO É UM OBSTÁCULO, condições: ");
+//				System.err.println("newCellPlayer == null? ");
+////				System.err.println(getPlayer() == null);
+//				System.err.println("newCellPlayer.isObstable() || newCellPlayer.hasWon()");
+//				System.err.println((getPlayer().isObstable() || getPlayer().hasWon()));
 			}
 			
-			System.out.println("--- [Bloqueio por obstáculo] --- "
-					+ "\n Jogador a ocupar: " + getPlayer() 
-					+ "\n Jogador a tentar ocupar: " + player);
+//			System.out.println("--- [Bloqueio por obstáculo] --- "
+//					+ "\n Jogador a ocupar: " + getPlayer() 
+//					+ "\n Jogador a tentar ocupar: " + player);
 			createThreadInterrupt();
 			try {
 				wait();
@@ -83,16 +83,16 @@ public class Cell {
 		//A cell está a tentar ser ocupada
 		while(isOcupied()) {
 			try {
-				System.out.println("--- [Bloqueio na colocação inicial] ---\n "
-						+ "Posição: " + getPosition() 
-						+ "\n Jogador a ocupar: " + getPlayer() 
-						+ "\n Jogador a tentar ocupar: " + player);
+//				System.out.println("--- [Bloqueio na colocação inicial] ---\n "
+//						+ "Posição: " + getPosition() 
+//						+ "\n Jogador a ocupar: " + getPlayer() 
+//						+ "\n Jogador a tentar ocupar: " + player);
 				createThreadInterrupt();
 				notOcupied.await();
 			} catch (InterruptedException e) {
-				System.err.println("VOU COLOCAR NOUTRO SITIO");
+//				System.err.println("VOU COLOCAR NOUTRO SITIO");
 				game.addPlayerToGame(player);
-				System.err.println("consegui?");
+//				System.err.println("consegui?");
 				return;
 			}
 		}
@@ -114,13 +114,13 @@ public class Cell {
                 	if(!game.hasStarted) {
                 		Thread.sleep(Game.INITIAL_WAITING_TIME);
                 		if(playerToInterrupt.getCurrentCell() != null) {
-                			System.err.println("Nao fiquei entalado");
+//                			System.err.println("Nao fiquei entalado");
                 			return;
                 		}
                 	}
                     Thread.sleep(Game.MAX_WAITING_TIME_FOR_MOVE);
                     if(playerToInterrupt.getState().equals(Thread.State.WAITING)) {
-                    System.out.println("Passaram 2 seg, a interromper " + playerToInterrupt);
+//                    System.out.println("Passaram 2 seg, a interromper " + playerToInterrupt);
                     playerToInterrupt.interrupt();
                     }
 

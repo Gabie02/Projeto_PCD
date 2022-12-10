@@ -37,6 +37,9 @@ public class HumanPlayer extends Player {
 			if(lastSentDirection!=null)
 				move();
 			
+			//Recetar a última direção
+			lastSentDirection = null;
+			
 			game.notifyChange();
 		}
 	}

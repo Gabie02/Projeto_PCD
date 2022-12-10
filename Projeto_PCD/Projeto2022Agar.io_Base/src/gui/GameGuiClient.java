@@ -12,27 +12,23 @@ import environment.Direction;
 
 import java.awt.event.KeyEvent;
 
-public class GameGuiClient extends GameGuiMain{
+public class GameGuiClient extends GameGuiMain {
 	private ObjectInputStream in;
 	private PrintWriter out;
 	private Socket socket;
 	private int socketNum;
 	private String address;
 	
-	private int LEFT;
-	private int RIGHT;
-	private int UP;
-	private int DOWN;
+	boolean alternativeKeys;
 	
 	private Direction lastDirection;
 	private BoardJComponent keyListener = boardGui;
 
-	public GameGuiClient(int socket, String address, int left, int right, int up, int down) {
+	public GameGuiClient(int socket, String address, boolean alternativeKeys) {
 		super();
-		LEFT = left;
-		RIGHT = right;
-		UP = up;
-		DOWN = down;
+		socketNum = socket;
+		this.address = address;
+		this.alternativeKeys = alternativeKeys;
 	}
 	
 	@Override 
@@ -48,13 +44,15 @@ public class GameGuiClient extends GameGuiMain{
 			connectToServer();
 			
 			//Fica a receber o gameState a cada intervalo
-			receiveGameState();
+			//receiveGameState();
 			
-		} catch (IOException e) {// ERRO...
-		} finally {//a fechar...
+			sendDirectionToServer();
+			
+		} catch (IOException e) {
+		} finally {
 			try {
 				socket.close();
-			} catch (IOException e) {//... 
+			} catch (IOException e) {
 			}
 		}
 	}
@@ -64,6 +62,7 @@ public class GameGuiClient extends GameGuiMain{
 			try {
 				GameState gameState = (GameState)in.readObject();
 				game.setBoard(gameState.getBoard());
+				game.notifyChange();
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
@@ -73,6 +72,7 @@ public class GameGuiClient extends GameGuiMain{
 
 	void connectToServer() throws IOException {
 		InetAddress endereco = InetAddress.getByName(address);
+		
 		socket = new Socket(endereco, socketNum);
 		
 		//O in é um canal de objetos
@@ -82,52 +82,40 @@ public class GameGuiClient extends GameGuiMain{
 		out = new PrintWriter(new BufferedWriter(
 				new OutputStreamWriter(socket.getOutputStream())),
 				true);
+		
+		System.out.println("Conexões do lado do CLIENT feitas para o socket: " + socket.toString());
 	}
 	
 	private void sendDirectionToServer() {
-		lastDirection = keyListener.getLastPressedDirection();
-		// Mandar ao servidor
-		out.print(lastDirection.name());
-		keyListener.clearLastPressedDirection();
+		while(!game.gameOver) {
+			lastDirection = keyListener.getLastPressedDirection();
+			if(lastDirection == null) 
+				continue;
+			// Mandar ao servidor
+			out.println(lastDirection.name());
+			System.out.println("Direção " +  lastDirection + " enviada");
+			keyListener.clearLastPressedDirection();
+		}
 	}
 	
-	// Vão ser recebidos 6 argumentos: endereço e porto da aplicação principal, 
-			//	teclas para movimentar nasquatro direções 
 	public static void main(String[] args) {
-		System.out.println("Códigos para as teclas:\n"
-				+ "\nLEFT	_ARROW: 0x25"
-				+ "\nRIGHT_ARROW: 0x27"
-				+ "\nUP_ARROW: 0x26"
-				+ "\nDOWN_ARROW: 0x28"
-				+ "\nA_KEY: 0x41"
-				+ "\nD_KEY: 0x44"
-				+ "\nW_KEY: 0x57"
-				+ "\nS_KEY: 0x53"
-				);
+		GameGuiClient client;
 		switch (args.length) {
 		case 0:
-			GameGuiClient client = new GameGuiClient(GameGuiServer.SOCKET, "localhost", 
-					KeyEvent.VK_LEFT,  
-					KeyEvent.VK_RIGHT,  
-					KeyEvent.VK_UP,  
-					KeyEvent.VK_DOWN);
+			client = new GameGuiClient(GameGuiServer.SOCKET, "localhost", false);
 			client.init();
 			break;
-//		case 6:
-//			GameGuiClient client = new GameGuiClient(GameGuiServer.SOCKET, "localhost", 
-//					KeyEvent.VK_LEFT,  
-//					KeyEvent.VK_RIGHT,  
-//					KeyEvent.VK_UP,  
-//					KeyEvent.VK_DOWN);
-//			break;
+		case 3:
+			int socket = Integer.parseInt(args[0]);
+			boolean keys = Boolean.getBoolean(args[2]);
+			client = new GameGuiClient(socket, args[1], keys);
+			client.init();
+			break;
 		default:
 			throw new IllegalArgumentException("Número errado de argumentos. Deverá ter a seguinte sintaxe:\n"
 					+ "	1. Endereço da aplicação;\n" 
 					+ "	2. Porto da aplicação;\n" 
-					+ "	3. Tecla da esquerda;\n" 
-					+ "	4. Tecla da direita;\n"  
-					+ "	5. Tecla de cima;\n"  
-					+ "	6. Tecla de baixo;\n");
+					+ " 3. Teclas alternativas? 1 (Sim) ou 0 (Não)");
 		}
 			
 
