@@ -40,7 +40,7 @@ public class GameGuiMain implements Observer {
 	}
 	
 	public static void gameOverMessage() {
-		JOptionPane.showMessageDialog(null, "Game Over", "3 Players won. The game is over!", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "3 Players won. The game is over!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
 		System.exit(0);
 	}
 	

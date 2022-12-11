@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Observable;
 import environment.Cell;
 import environment.Coordinate;
+import gui.GameGuiClient;
 import gui.GameGuiMain;
 
 public class Game extends Observable implements Serializable{
@@ -61,6 +62,7 @@ public class Game extends Observable implements Serializable{
 			cdl.await();
 			gameOver = true;
 			GameGuiMain.gameOverMessage();
+			GameGuiClient.gameOverMessage();
 			return;
 			
 		} catch (InterruptedException e) {

@@ -108,13 +108,11 @@ public class GameGuiClient extends GameGuiMain {
 	}
 	
 	public static void playerWonMessage() {
-		JOptionPane.showMessageDialog(frame, "You Won", "Congrats, You won! =D", JOptionPane.INFORMATION_MESSAGE);
-		System.exit(0);
+		JOptionPane.showMessageDialog(frame, "Congrats, You won! =D", "You Won", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public static void playerDiedMessage() {
-		JOptionPane.showMessageDialog(frame, "You died", "You died :(", JOptionPane.INFORMATION_MESSAGE);
-		System.exit(0);
+		JOptionPane.showMessageDialog(frame, "You died :(", "You died", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public static void main(String[] args) {
