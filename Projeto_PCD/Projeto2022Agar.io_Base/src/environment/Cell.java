@@ -81,9 +81,7 @@ public class Cell implements Serializable{
 				createThreadInterrupt();
 				notOcupied.await();
 			} catch (InterruptedException e) {
-//				System.err.println("VOU COLOCAR NOUTRO SITIO");
 				game.addPlayerToGame(player);
-//				System.err.println("consegui?");
 				return;
 			}
 		}
@@ -104,16 +102,12 @@ public class Cell implements Serializable{
                 try {
                 	if(!game.hasStarted) {
                 		Thread.sleep(Game.INITIAL_WAITING_TIME);
-                		if(playerToInterrupt.getCurrentCell() != null) {
-//                			System.err.println("Nao fiquei entalado");
+                		if(playerToInterrupt.getCurrentCell() != null) 
                 			return;
-                		}
                 	}
                     Thread.sleep(Game.MAX_WAITING_TIME_FOR_MOVE);
-                    if(playerToInterrupt.getState().equals(Thread.State.WAITING)) {
-//                    System.out.println("Passaram 2 seg, a interromper " + playerToInterrupt);
-                    playerToInterrupt.interrupt();
-                    }
+                    if(playerToInterrupt.getState().equals(Thread.State.WAITING)) 
+                    	playerToInterrupt.interrupt();
 
                 } catch (InterruptedException e) {
                     return;

@@ -7,8 +7,13 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Arrays;
 
+import javax.swing.JFrame;
+
+import environment.Cell;
 import environment.Direction;
+import game.Player;
 
 import java.awt.event.KeyEvent;
 
@@ -68,13 +73,11 @@ public class GameGuiClient extends GameGuiMain {
 				try { 
 					try {
 						while(!game.gameOver) {
-							GameState gameState = 
-									(GameState)in.readObject();
+							Cell[][] gameState = 
+									(Cell[][])in.readObject();
 							
-							System.out.println("Novo estado de jogo recebido.");
-							
-							game.setBoard(gameState.getBoard());
-//							game.notifyChange();
+							game.setBoard(gameState);
+							game.notifyChange();
 						}
 					} finally {
 						in.close();
@@ -106,7 +109,6 @@ public class GameGuiClient extends GameGuiMain {
 				continue;
 			// Mandar ao servidor
 			out.println(lastDirection.name());
-//			System.out.println("Direção " +  lastDirection + " enviada");
 			keyListener.clearLastPressedDirection();
 		}
 	}

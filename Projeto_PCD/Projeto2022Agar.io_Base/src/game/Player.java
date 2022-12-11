@@ -1,11 +1,5 @@
 package game;
-
-
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import environment.Cell;
 import environment.Coordinate;
 
@@ -69,7 +63,6 @@ public abstract class Player extends Thread implements Serializable{
 	}
 	
 	public static void settleDisputeBetween(Player p1, Player p2) {
-//		System.out.println("--- [Disputa] --- \n	Entre: \n	" + p1 + "\n	" + p2);
 		Player winner = (p1.currentStrength > p2.currentStrength) ? p1 : p2;
 		Player loser = (p1.currentStrength > p2.currentStrength) ? p2 : p1;
 		
@@ -80,7 +73,6 @@ public abstract class Player extends Thread implements Serializable{
 				winner.currentStrength=10 : winner.currentStrength;
 		
 		loser.setAsObstacle();
-//		System.out.println("	Vencedor da disputa id=" + winner.id);
 	}
 	
 	public abstract boolean isHumanPlayer();

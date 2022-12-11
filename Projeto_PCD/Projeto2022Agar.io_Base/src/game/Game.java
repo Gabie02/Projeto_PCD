@@ -1,14 +1,10 @@
 package game;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Observable;
 import environment.Cell;
 import environment.Coordinate;
 import gui.GameGuiMain;
-import gui.GameState;
-import gui.PlayerPosition;
 
 public class Game extends Observable implements Serializable{
 
@@ -30,7 +26,6 @@ public class Game extends Observable implements Serializable{
 	public boolean hasStarted = false;
 
 	protected Cell[][] board;
-
 
 	public Game() {
 		board = new Cell[Game.DIMX][Game.DIMY];
@@ -54,12 +49,10 @@ public class Game extends Observable implements Serializable{
 	}
 
 	public void init() {
-		//Depois trocar por NUM_PLAYERS - NUM_HUMAN_PLAYERS
 		for (int i = 1; i <= NUM_PLAYERS; i++) {
 			int randomEnergy = 1 + (int)(Math.random() * MAX_INITIAL_STRENGTH);
 			new AutomaticPlayer(i, this, (byte)randomEnergy).start();
 		}
-		//Tentativa CountDownLatch
 		gameIsOver();
 	}
 	
@@ -89,46 +82,6 @@ public class Game extends Observable implements Serializable{
 	public void setBoard(Cell[][] newBoard) {
 		board = newBoard;
 	}
-	
-	//Outra forma de fazer é receber as novas posições e fazer 
-	//esses players fazerem setPlayer() na nessa nova position
-//	public void updateGame(ArrayList<PlayerPosition> playerPositions) {
-//		Cell[][] newBoard = new Cell[DIMX][DIMY];
-//		for (PlayerPosition pos : playerPositions) {
-//			
-//			Coordinate posCoords = pos.getCoord();
-//			
-//			newBoard[posCoords.x][posCoords.y] 
-//					= new Cell(posCoords, this);
-//			
-//			newBoard[posCoords.x][posCoords.y]
-//					.setPlayer(Player.getPlayers().get(pos.getPlayerId()));
-//		}
-//		
-//		for (int i = 0; i < newBoard.length; i++) {
-//			for (int j = 0; j < newBoard.length; j++) {
-//				
-//			}
-//		}
-//		
-//	}
-//	
-//	public ArrayList<PlayerPosition> getGameState() {
-//		ArrayList<PlayerPosition> playerPositions = new ArrayList<>();
-//		for (int i = 0; i < board.length; i++) {
-//			for (int j = 0; j < board.length; j++) {
-//				Cell cell = board[i][j];
-//				if(cell.isOcupied()) {
-//					Player p = cell.getPlayer();
-//					playerPositions.add(
-//							new PlayerPosition(cell.getPosition(), 
-//									p.getIdentification(), 
-//									p.isHumanPlayer()));
-//				}
-//			}
-//		}
-//		return playerPositions;
-//	}
 	
 	public Cell getCell(Coordinate at) {
 		return board[at.x][at.y];

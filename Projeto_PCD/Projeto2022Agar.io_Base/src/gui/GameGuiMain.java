@@ -35,7 +35,7 @@ public class GameGuiMain implements Observer {
 		frame.setVisible(true);
 		server = new GameServer(game);
 		server.start();
-		//Adiciona todos os players ao jogo
+		//Adiciona todos os players automáticos ao jogo
 		game.init();		
 	
 	}

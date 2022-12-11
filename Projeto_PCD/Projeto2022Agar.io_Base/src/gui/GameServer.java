@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
+import environment.Cell;
 import game.Game;
 import game.HumanPlayer;
 
@@ -20,7 +20,8 @@ public class GameServer extends Thread{
 	private final Runnable updateGameTask = new Runnable() {
 	       public void run() { 
 	    	   for (GameDealWithClient client : clients) {
-	    		   client.sendGameState(new GameState(game.getBoard()));
+	    		   Cell[][] gameState = game.getBoard();
+	    		   client.sendGameState(gameState);
 	    	   }
 		}};
 	
@@ -39,7 +40,7 @@ public class GameServer extends Thread{
 				while(!game.gameOver){
 					
 					Socket socket = ss.accept();
-					HumanPlayer human = new HumanPlayer(90 + count, game);
+					HumanPlayer human = new HumanPlayer(100 + count, game);
 					
 					GameDealWithClient t = new GameDealWithClient(socket, human);
 					t.start();

@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-
 import environment.Cell;
 import environment.Direction;
 import game.HumanPlayer;
@@ -46,7 +44,6 @@ public class GameDealWithClient extends Thread {
 				while (true) {
 					//Receber as teclas do cliente e enviar ao jogo
 					String lastDirection = in.readLine();
-//					System.out.println("Direção recebida: " + lastDirection);
 
 					//Caso o cliente não tenha pressionado nenhuma tecla, mandar direção null
 					if (lastDirection == null)
@@ -62,9 +59,10 @@ public class GameDealWithClient extends Thread {
 	}
 
 	//Serializa o objeto
-	public void sendGameState(GameState gameState) {
+	public void sendGameState(Cell[][] gameState) {
 		try {
 			out.writeObject(gameState);
+			out.reset();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
