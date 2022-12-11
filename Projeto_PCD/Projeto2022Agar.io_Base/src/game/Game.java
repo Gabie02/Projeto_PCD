@@ -1,12 +1,16 @@
 package game;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
 import environment.Cell;
 import environment.Coordinate;
 import gui.GameGuiMain;
+import gui.GameState;
+import gui.PlayerPosition;
 
-public class Game extends Observable {
+public class Game extends Observable implements Serializable{
 
 	public static final int DIMY = 30;
 	public static final int DIMX = 30;
@@ -21,24 +25,12 @@ public class Game extends Observable {
 	
 	public static final int NUM_POINTS_TO_WIN = 10;
 	public CountDownLatch cdl = new CountDownLatch(NUM_FINISHED_PLAYERS_TO_END_GAME);
+	
 	public boolean gameOver = false;
-	//TESTE
 	public boolean hasStarted = false;
 
 	protected Cell[][] board;
-	
-	//-------- Game como singleton ----------
-	
-//	private static Game game_instance = null;
-//	
-//	public static Game getInstance() {
-//		if (game_instance == null)
-//            game_instance = new Game();
-//  
-//        return game_instance;
-//	}
-	
-	//---------------------------------------
+
 
 	public Game() {
 		board = new Cell[Game.DIMX][Game.DIMY];
@@ -85,10 +77,58 @@ public class Game extends Observable {
 		}
 	}
 
+	public Cell[][] getBoard() {
+		Cell[][] boardCopy = new Cell[DIMX][];
+		 for (int i = 0; i < DIMX; ++i) {
+             boardCopy[i] = new Cell[DIMY];
+             System.arraycopy(board[i], 0, boardCopy[i], 0, DIMY);
+        }
+		return board;	
+	}
+	
 	public void setBoard(Cell[][] newBoard) {
 		board = newBoard;
 	}
-
+	
+	//Outra forma de fazer é receber as novas posições e fazer 
+	//esses players fazerem setPlayer() na nessa nova position
+//	public void updateGame(ArrayList<PlayerPosition> playerPositions) {
+//		Cell[][] newBoard = new Cell[DIMX][DIMY];
+//		for (PlayerPosition pos : playerPositions) {
+//			
+//			Coordinate posCoords = pos.getCoord();
+//			
+//			newBoard[posCoords.x][posCoords.y] 
+//					= new Cell(posCoords, this);
+//			
+//			newBoard[posCoords.x][posCoords.y]
+//					.setPlayer(Player.getPlayers().get(pos.getPlayerId()));
+//		}
+//		
+//		for (int i = 0; i < newBoard.length; i++) {
+//			for (int j = 0; j < newBoard.length; j++) {
+//				
+//			}
+//		}
+//		
+//	}
+//	
+//	public ArrayList<PlayerPosition> getGameState() {
+//		ArrayList<PlayerPosition> playerPositions = new ArrayList<>();
+//		for (int i = 0; i < board.length; i++) {
+//			for (int j = 0; j < board.length; j++) {
+//				Cell cell = board[i][j];
+//				if(cell.isOcupied()) {
+//					Player p = cell.getPlayer();
+//					playerPositions.add(
+//							new PlayerPosition(cell.getPosition(), 
+//									p.getIdentification(), 
+//									p.isHumanPlayer()));
+//				}
+//			}
+//		}
+//		return playerPositions;
+//	}
 	
 	public Cell getCell(Coordinate at) {
 		return board[at.x][at.y];
@@ -107,12 +147,5 @@ public class Game extends Observable {
 		return newCell; 
 	}
 
-	public Cell[][] getBoard() {
-		Cell[][] boardCopy = new Cell[DIMX][];
-		 for (int i = 0; i < DIMX; ++i) {
-             boardCopy[i] = new Cell[DIMY];
-             System.arraycopy(board[i], 0, boardCopy[i], 0, DIMY);
-        }
-		return board;	
-	}
+
 }

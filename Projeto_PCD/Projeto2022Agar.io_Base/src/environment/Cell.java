@@ -1,6 +1,5 @@
 package environment;
-
-
+import java.io.Serializable;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -8,7 +7,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import game.Game;
 import game.Player;
 
-public class Cell {
+public class Cell implements Serializable{
 	private Coordinate position;
 	private Game game;
 	private Player player=null;
@@ -43,14 +42,6 @@ public class Cell {
 		
 		//Player fica bloqueado se a cell já estiver ocupada
 		while(isOcupied()) {
-			if(getPlayer().getCurrentStrength() != 0 && getPlayer().getCurrentStrength() != 10) {
-//				System.err.println("PLAYER NÃO É UM OBSTÁCULO, condições: ");
-//				System.err.println("newCellPlayer == null? ");
-////				System.err.println(getPlayer() == null);
-//				System.err.println("newCellPlayer.isObstable() || newCellPlayer.hasWon()");
-//				System.err.println((getPlayer().isObstable() || getPlayer().hasWon()));
-			}
-			
 //			System.out.println("--- [Bloqueio por obstáculo] --- "
 //					+ "\n Jogador a ocupar: " + getPlayer() 
 //					+ "\n Jogador a tentar ocupar: " + player);

@@ -2,6 +2,10 @@ package game;
 
 
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import environment.Cell;
 import environment.Coordinate;
 
@@ -10,7 +14,7 @@ import environment.Coordinate;
  * @author luismota
  *
  */
-public abstract class Player extends Thread {
+public abstract class Player extends Thread implements Serializable{
 
 	protected  Game game;
 
@@ -19,15 +23,14 @@ public abstract class Player extends Thread {
 	private byte currentStrength;
 	protected byte originalStrength;
 	
-//	private Coordinate position;
-	
-//	public Cell getCurrentCell() {
-//		//Este if serve para evitar um NullPointerException
-//		if(position == null)
-//			return null;
-//		return game.getCell(position);
-//	}
-	
+	public Player(int id, Game game, byte strength) {
+		super();
+		this.id = id;
+		this.game=game;
+		currentStrength=strength;
+		originalStrength=strength;
+	}
+
 	public Cell getCurrentCell() {
 		for (int i = 0; i < Game.DIMX; i++) {
 			for (int j = 0; j < Game.DIMY; j++) {
@@ -42,23 +45,9 @@ public abstract class Player extends Thread {
 		return null;
 	}
 	
-//	protected void setPosition(Coordinate newPosCoordinate) {
-//		position = newPosCoordinate;
-//	}
-
-	public Player(int id, Game game, byte strength) {
-		super();
-		this.id = id;
-		this.game=game;
-		currentStrength=strength;
-		originalStrength=strength;
-	}
-	
 	@Override
 	public void run() {
 		game.addPlayerToGame(this);
-//		System.out.println("Thread nº" + getId() + " player nº" + getIdentification());
-//		this.setPosition(initialPos);
 		if(!game.hasStarted) {
 		try {
 			sleep(Game.INITIAL_WAITING_TIME);

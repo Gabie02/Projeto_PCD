@@ -1,6 +1,8 @@
 package game;
 
-public class CountDownLatch {
+import java.io.Serializable;
+
+public class CountDownLatch implements Serializable {
 	
 	public CountDownLatch (int count) {
 		this.count = count ;

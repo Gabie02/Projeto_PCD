@@ -12,6 +12,10 @@ import environment.Direction;
 
 import java.awt.event.KeyEvent;
 
+/**
+ * @author Usuario
+ *
+ */
 public class GameGuiClient extends GameGuiMain {
 	private ObjectInputStream in;
 	private PrintWriter out;
@@ -40,14 +44,9 @@ public class GameGuiClient extends GameGuiMain {
 	
 	public void runClient() {
 		try {
-			//Apanha as keys do player
 			connectToServer();
-			
-			//Fica a receber o gameState a cada intervalo
-			//receiveGameState();
-			
+			createGameStateReceivingThread();
 			sendDirectionToServer();
-			
 		} catch (IOException e) {
 		} finally {
 			try {
@@ -57,35 +56,49 @@ public class GameGuiClient extends GameGuiMain {
 		}
 	}
 
-	private void receiveGameState() {
-		while(!game.gameOver) {
-			try {
-				GameState gameState = (GameState)in.readObject();
-				game.setBoard(gameState.getBoard());
-				game.notifyChange();
-			} catch (ClassNotFoundException | IOException e) {
-				e.printStackTrace();
+	
+	/**
+	 * Cria uma thread que fica à espera de um novo estado de jogo no 
+	 * canal de objetos e atualiza o jogo do utilizador.
+	 */
+	private void createGameStateReceivingThread() {
+		new Thread(){
+			@Override
+			public void run(){
+				try { 
+					try {
+						while(!game.gameOver) {
+							GameState gameState = 
+									(GameState)in.readObject();
+							
+							System.out.println("Novo estado de jogo recebido.");
+							
+							game.setBoard(gameState.getBoard());
+//							game.notifyChange();
+						}
+					} finally {
+						in.close();
+					}
+				}catch(Exception e){}
 			}
-		}
-		
+	}.start();
+
 	}
 
 	void connectToServer() throws IOException {
 		InetAddress endereco = InetAddress.getByName(address);
-		
 		socket = new Socket(endereco, socketNum);
 		
 		//O in é um canal de objetos
-		in = new ObjectInputStream (socket.getInputStream());
+		in = new ObjectInputStream(socket.getInputStream());
 		
 		//O out é um canal de texto
 		out = new PrintWriter(new BufferedWriter(
 				new OutputStreamWriter(socket.getOutputStream())),
 				true);
-		
-		System.out.println("Conexões do lado do CLIENT feitas para o socket: " + socket.toString());
 	}
 	
+	//Apanha as keys do player e manda para o servidor
 	private void sendDirectionToServer() {
 		while(!game.gameOver) {
 			lastDirection = keyListener.getLastPressedDirection();
@@ -93,7 +106,7 @@ public class GameGuiClient extends GameGuiMain {
 				continue;
 			// Mandar ao servidor
 			out.println(lastDirection.name());
-			System.out.println("Direção " +  lastDirection + " enviada");
+//			System.out.println("Direção " +  lastDirection + " enviada");
 			keyListener.clearLastPressedDirection();
 		}
 	}
@@ -102,7 +115,7 @@ public class GameGuiClient extends GameGuiMain {
 		GameGuiClient client;
 		switch (args.length) {
 		case 0:
-			client = new GameGuiClient(GameGuiServer.SOCKET, "localhost", false);
+			client = new GameGuiClient(GameServer.SOCKET, "localhost", false);
 			client.init();
 			break;
 		case 3:
@@ -118,8 +131,6 @@ public class GameGuiClient extends GameGuiMain {
 					+ " 3. Teclas alternativas? 1 (Sim) ou 0 (Não)");
 		}
 			
-
-
 	}
 
 }

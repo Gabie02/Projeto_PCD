@@ -29,15 +29,15 @@ public class HumanPlayer extends Player {
 
 			//Se o jogador é um dos vencedores, acabar o run e registar no jogo
 			if(hasWon()) {
-//				System.err.println("Jogador " + this + " ganhou");
 				game.cdl.countDown();
 				break;
 			}
-
+			
+			//O player só se move quando recebe uma direção do cliente
 			if(lastSentDirection!=null)
 				move();
 			
-			//Recetar a última direção
+			//Fazer reset à última direção
 			lastSentDirection = null;
 			
 			game.notifyChange();

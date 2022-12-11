@@ -1,7 +1,5 @@
 package gui;
-
 import java.io.Serializable;
-
 import environment.Cell;
 
 public class GameState implements Serializable {

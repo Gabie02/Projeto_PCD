@@ -12,7 +12,7 @@ public class GameGuiMain implements Observer {
 	protected JFrame frame = new JFrame("pcd.io");
 	protected BoardJComponent boardGui;
 	protected static Game game;
-	private GameGuiServer server;
+	private GameServer server;
 
 	public GameGuiMain() {
 		super();
@@ -33,7 +33,7 @@ public class GameGuiMain implements Observer {
 
 	public void init()  {
 		frame.setVisible(true);
-		server = new GameGuiServer(game);
+		server = new GameServer(game);
 		server.start();
 		//Adiciona todos os players ao jogo
 		game.init();		
