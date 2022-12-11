@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import environment.Cell;
@@ -40,6 +41,7 @@ public class GameGuiClient extends GameGuiMain {
 	public void init()  {
 		frame.setVisible(true);	
 		frame.setLocation(800, 150);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		runClient();
 	}
 	
