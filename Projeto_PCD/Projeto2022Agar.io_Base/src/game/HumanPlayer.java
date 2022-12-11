@@ -3,6 +3,7 @@ package game;
 import environment.Cell;
 import environment.Coordinate;
 import environment.Direction;
+import gui.GameGuiClient;
 
 public class HumanPlayer extends Player {
 	
@@ -25,12 +26,13 @@ public class HumanPlayer extends Player {
 			
 			//Se já estiver morto, acabar o run
 			if(isObstable()) {
-				
+				GameGuiClient.gameOverMessage();
 				break;
 			}
 
 			//Se o jogador é um dos vencedores, acabar o run e registar no jogo
 			if(hasWon()) {
+				GameGuiClient.playerWonMessage();
 				game.cdl.countDown();
 				break;
 			}

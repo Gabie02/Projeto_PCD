@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import javax.swing.JOptionPane;
+
 import environment.Cell;
 import environment.Direction;
 
@@ -55,7 +57,6 @@ public class GameGuiClient extends GameGuiMain {
 		}
 	}
 
-	
 	/**
 	 * Cria uma thread que fica à espera de um novo estado de jogo no 
 	 * canal de objetos e atualiza o jogo do utilizador.
@@ -69,7 +70,7 @@ public class GameGuiClient extends GameGuiMain {
 						while(!game.gameOver) {
 							Cell[][] gameState = 
 									(Cell[][])in.readObject();
-							
+
 							game.setBoard(gameState);
 							game.notifyChange();
 						}
@@ -78,8 +79,7 @@ public class GameGuiClient extends GameGuiMain {
 					}
 				}catch(Exception e){}
 			}
-	}.start();
-
+		}.start();
 	}
 
 	void connectToServer() throws IOException {
@@ -105,6 +105,16 @@ public class GameGuiClient extends GameGuiMain {
 			out.println(lastDirection.name());
 			keyListener.clearLastPressedDirection();
 		}
+	}
+	
+	public static void playerWonMessage() {
+		JOptionPane.showMessageDialog(frame, "You Won", "Congrats, You won! =D", JOptionPane.INFORMATION_MESSAGE);
+		System.exit(0);
+	}
+	
+	public static void playerDiedMessage() {
+		JOptionPane.showMessageDialog(frame, "You died", "You died :(", JOptionPane.INFORMATION_MESSAGE);
+		System.exit(0);
 	}
 	
 	public static void main(String[] args) {

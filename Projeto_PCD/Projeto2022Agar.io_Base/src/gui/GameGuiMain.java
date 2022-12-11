@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class GameGuiMain implements Observer {
-	protected JFrame frame = new JFrame("pcd.io");
+	protected static JFrame frame = new JFrame("pcd.io");
 	protected BoardJComponent boardGui;
 	protected static Game game;
 	private GameServer server;
@@ -40,8 +40,8 @@ public class GameGuiMain implements Observer {
 	}
 	
 	public static void gameOverMessage() {
-		 JOptionPane.showMessageDialog(null, "Game Over", "The game is over!", JOptionPane.INFORMATION_MESSAGE);
-			 System.exit(0);
+		JOptionPane.showMessageDialog(null, "Game Over", "3 Players won. The game is over!", JOptionPane.INFORMATION_MESSAGE);
+		System.exit(0);
 	}
 	
 	@Override

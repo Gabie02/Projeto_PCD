@@ -39,12 +39,8 @@ public class Cell implements Serializable{
 			notifyAll();
 			return;
 		}
-		
 		//Player fica bloqueado se a cell já estiver ocupada
 		while(isOcupied()) {
-//			System.out.println("--- [Bloqueio por obstáculo] --- "
-//					+ "\n Jogador a ocupar: " + getPlayer() 
-//					+ "\n Jogador a tentar ocupar: " + player);
 			createThreadInterrupt();
 			try {
 				wait();
@@ -52,7 +48,6 @@ public class Cell implements Serializable{
 				//Quando o player é acordado, deverá tentar ir para outra posição (não é feito o this.player = player)
 				return;
 			}
-			
 		}
 		//A cell está desocupada
 		this.player = player;
@@ -74,10 +69,10 @@ public class Cell implements Serializable{
 		//A cell está a tentar ser ocupada
 		while(isOcupied()) {
 			try {
-//				System.out.println("--- [Bloqueio na colocação inicial] ---\n "
-//						+ "Posição: " + getPosition() 
-//						+ "\n Jogador a ocupar: " + getPlayer() 
-//						+ "\n Jogador a tentar ocupar: " + player);
+				System.out.println("--- [Bloqueio na colocação inicial] ---\n "
+						+ "Posição: " + getPosition() 
+						+ "\n Jogador a ocupar: " + getPlayer() 
+						+ "\n Jogador a tentar ocupar: " + player);
 				createThreadInterrupt();
 				notOcupied.await();
 			} catch (InterruptedException e) {

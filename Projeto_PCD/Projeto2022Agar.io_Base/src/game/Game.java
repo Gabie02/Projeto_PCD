@@ -59,7 +59,6 @@ public class Game extends Observable implements Serializable{
 	private void gameIsOver() {
 		try {
 			cdl.await();
-			System.err.println("ACABOU O JOGO");
 			gameOver = true;
 			GameGuiMain.gameOverMessage();
 			return;
@@ -76,7 +75,7 @@ public class Game extends Observable implements Serializable{
              boardCopy[i] = new Cell[DIMY];
              System.arraycopy(board[i], 0, boardCopy[i], 0, DIMY);
         }
-		return board;	
+		return boardCopy;	
 	}
 	
 	public void setBoard(Cell[][] newBoard) {

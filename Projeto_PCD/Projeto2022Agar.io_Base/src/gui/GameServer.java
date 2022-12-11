@@ -17,6 +17,8 @@ public class GameServer extends Thread{
 	private Game game;
 	
 	private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	
+	//Task para enviar a todos os clientes o novo estado de jogo
 	private final Runnable updateGameTask = new Runnable() {
 	       public void run() { 
 	    	   for (GameDealWithClient client : clients) {
@@ -40,13 +42,12 @@ public class GameServer extends Thread{
 				while(!game.gameOver){
 					
 					Socket socket = ss.accept();
+					System.out.println("O servidor recebeu um cliente");
 					HumanPlayer human = new HumanPlayer(100 + count, game);
 					
 					GameDealWithClient t = new GameDealWithClient(socket, human);
-					t.start();
 					clients.add(t);
-					
-					//O humano começa mal se conecta
+					t.start();
 					human.start();
 					
 					//Contador de ids
@@ -56,7 +57,6 @@ public class GameServer extends Thread{
 				ss.close();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -64,6 +64,6 @@ public class GameServer extends Thread{
 	
 	//A cada Game.REFRESH_INTERVAL irá enviar o estado do jogo a todos os clientes
 	private void setGameStateSender() {
-		scheduler.scheduleAtFixedRate(updateGameTask, 0 ,game.REFRESH_INTERVAL, TimeUnit.MILLISECONDS);
+		scheduler.scheduleAtFixedRate(updateGameTask, 0, Game.REFRESH_INTERVAL, TimeUnit.MILLISECONDS);
 	}
 }
