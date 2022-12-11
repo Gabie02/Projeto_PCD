@@ -26,7 +26,7 @@ public class HumanPlayer extends Player {
 			
 			//Se já estiver morto, acabar o run
 			if(isObstable()) {
-				GameGuiClient.gameOverMessage();
+				GameGuiClient.playerDiedMessage();
 				break;
 			}
 
