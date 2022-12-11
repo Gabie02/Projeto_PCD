@@ -7,15 +7,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Arrays;
-
-import javax.swing.JFrame;
 
 import environment.Cell;
 import environment.Direction;
-import game.Player;
-
-import java.awt.event.KeyEvent;
 
 /**
  * @author Usuario
@@ -127,10 +121,8 @@ public class GameGuiClient extends GameGuiMain {
 			client.init();
 			break;
 		default:
-			throw new IllegalArgumentException("Número errado de argumentos. Deverá ter a seguinte sintaxe:\n"
-					+ "	1. Endereço da aplicação;\n" 
-					+ "	2. Porto da aplicação;\n" 
-					+ " 3. Teclas alternativas? 1 (Sim) ou 0 (Não)");
+			throw new IllegalArgumentException("Número de argumentos errado. Deverá ter a seguinte sintaxe:\n"
+					+ "{Porto da aplicação} {Endereço da aplicação} {Teclas alternativas (AWSD) ? 1 (Sim) ou 0 (Não)}");
 		}
 			
 	}

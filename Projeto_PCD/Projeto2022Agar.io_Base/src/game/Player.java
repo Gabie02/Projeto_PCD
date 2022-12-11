@@ -43,9 +43,9 @@ public abstract class Player extends Thread implements Serializable{
 	public void run() {
 		game.addPlayerToGame(this);
 		if(!game.hasStarted) {
-		try {
-			sleep(Game.INITIAL_WAITING_TIME);
-		} catch (InterruptedException e1) {}
+			try {
+				sleep(Game.INITIAL_WAITING_TIME);
+			} catch (InterruptedException e1) {}
 		}
 		game.hasStarted = true;
 	}

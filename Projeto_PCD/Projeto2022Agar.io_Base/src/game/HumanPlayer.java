@@ -19,13 +19,15 @@ public class HumanPlayer extends Player {
 
 	@Override
 	public void run() {
-		//	O sleep é feito agora na classe "pai", Player
+		//	O sleep é feito na classe "pai", Player
 		super.run();
 		while(!game.gameOver) {
 			
 			//Se já estiver morto, acabar o run
-			if(isObstable())
+			if(isObstable()) {
+				
 				break;
+			}
 
 			//Se o jogador é um dos vencedores, acabar o run e registar no jogo
 			if(hasWon()) {
@@ -41,6 +43,13 @@ public class HumanPlayer extends Player {
 			lastSentDirection = null;
 			
 			game.notifyChange();
+			
+			try {
+				sleep(Game.REFRESH_INTERVAL);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

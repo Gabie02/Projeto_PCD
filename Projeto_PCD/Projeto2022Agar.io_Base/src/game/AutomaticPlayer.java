@@ -20,7 +20,7 @@ public class AutomaticPlayer extends Player {
 
 	@Override
 	public void run() {
-		//	O sleep é feito agora na classe "pai", Player
+		//	O sleep é feito na classe "pai", Player
 		super.run();
 		while(!game.gameOver) {
 			
